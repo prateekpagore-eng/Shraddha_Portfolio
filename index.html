@@ -461,14 +461,21 @@
 </head>
 <body>
 <style id="st-custom">
+  /* ── Hide original Framer nav ── */
   .framer-1lcmve6 { display: none !important; }
+  /* ── Hide second fold tickers ── */
+  .framer-cyj4wy { display: none !important; }
+
+  /* ── Custom Header — Glassmorphism ── */
   #st-header {
     position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 40px;
-    background: rgba(255,255,255,0.92);
-    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(0,0,0,0.07);
+    padding: 16px 40px;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 1px 24px rgba(0, 0, 0, 0.06);
     font-family: 'Geist', 'Geist Placeholder', sans-serif;
   }
   .st-name {
@@ -486,29 +493,41 @@
   #st-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   #st-hamburger.open span:nth-child(2) { opacity: 0; }
   #st-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ── Dropdown nav — right side panel ── */
   #st-nav {
-    display: none; position: fixed; top: 62px; left: 0; right: 0;
-    background: rgba(255,255,255,0.97);
-    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(0,0,0,0.07);
-    padding: 16px 40px 24px; z-index: 9998;
+    display: none;
+    position: fixed; top: 58px; right: 40px;
+    width: 200px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    padding: 8px 0;
+    z-index: 9998;
+    overflow: hidden;
   }
-  #st-nav.open { display: flex; flex-direction: column; gap: 4px; }
+  #st-nav.open { display: flex; flex-direction: column; }
   #st-nav a {
     font-family: 'Geist', 'Geist Placeholder', sans-serif;
     font-size: 14px; font-weight: 500; letter-spacing: -0.03em;
     color: #000; text-decoration: none;
-    padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.06);
-    transition: opacity 0.2s;
+    padding: 12px 20px;
+    transition: background 0.15s;
   }
-  #st-nav a:last-child { border-bottom: none; }
-  #st-nav a:hover { opacity: 0.5; }
+  #st-nav a:hover { background: rgba(0,0,0,0.04); }
+
+  /* ── Push page content below fixed header ── */
   #main { padding-top: 62px !important; }
+
   @media (max-width: 640px) {
-    #st-header { padding: 16px 20px; }
-    #st-nav { padding: 12px 20px 20px; }
+    #st-header { padding: 14px 20px; }
+    #st-nav { right: 16px; }
   }
 </style>
+
 <header id="st-header">
   <a class="st-name" href="#">Shraddha Thorat</a>
   <button id="st-hamburger" aria-label="Toggle menu">
@@ -521,29 +540,78 @@
   <a href="#about-1">About</a>
   <a href="#experience">Contact</a>
 </nav>
+
 <script>
-  (function() {
-    var btn = document.getElementById('st-hamburger');
-    var nav = document.getElementById('st-nav');
-    if (btn) btn.addEventListener('click', function() {
-      btn.classList.toggle('open');
-      nav.classList.toggle('open');
+(function() {
+  var btn = document.getElementById('st-hamburger');
+  var nav = document.getElementById('st-nav');
+
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    btn.classList.toggle('open');
+    nav.classList.toggle('open');
+  });
+
+  document.addEventListener('click', function(e) {
+    if (!nav.contains(e.target) && e.target !== btn) {
+      btn.classList.remove('open');
+      nav.classList.remove('open');
+    }
+  });
+
+  nav.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      btn.classList.remove('open');
+      nav.classList.remove('open');
     });
-    nav.querySelectorAll('a').forEach(function(a) {
-      a.addEventListener('click', function() {
-        btn.classList.remove('open');
-        nav.classList.remove('open');
-      });
-    });
-    document.addEventListener('click', function(e) {
-      var a = e.target.closest('a[href^="#"]');
-      if (a) {
-        var id = a.getAttribute('href').slice(1);
-        var el = document.getElementById(id);
-        if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth' }); }
+  });
+
+  // Smooth scroll for all hash links
+  document.addEventListener('click', function(e) {
+    var a = e.target.closest('a[href^="#"]');
+    if (a) {
+      var id = a.getAttribute('href').slice(1);
+      var el = document.getElementById(id);
+      if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth' }); }
+    }
+  });
+
+  // ── Post-render: inject SVG illustrations into process cards ──
+  var illustrations = {
+    '1': '<svg width="56" height="56" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="26" cy="26" r="16" stroke="#000" stroke-width="2.5"/><line x1="37.5" y1="37.5" x2="52" y2="52" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><line x1="20" y1="26" x2="32" y2="26" stroke="#000" stroke-width="2" stroke-linecap="round"/><line x1="26" y1="20" x2="26" y2="32" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg>',
+    '2': '<svg width="56" height="56" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="32,6 58,32 32,58 6,32" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/><polygon points="32,18 46,32 32,46 18,32" fill="rgba(0,0,0,0.07)" stroke="#000" stroke-width="1.5" stroke-linejoin="round"/><circle cx="32" cy="6" r="3" fill="#000"/><circle cx="58" cy="32" r="3" fill="#000"/><circle cx="32" cy="58" r="3" fill="#000"/><circle cx="6" cy="32" r="3" fill="#000"/></svg>',
+    '3': '<svg width="56" height="56" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 52L20 31L43 8L56 21L33 44L12 52Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/><line x1="20" y1="31" x2="33" y2="44" stroke="#000" stroke-width="1.5"/><circle cx="49.5" cy="14.5" r="4" stroke="#000" stroke-width="2"/><line x1="8" y1="56" x2="12" y2="52" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg>'
+  };
+
+  function injectIllustrations() {
+    var cards = document.querySelectorAll('[data-framer-name="Card Item"]');
+    cards.forEach(function(card) {
+      if (card.querySelector('.st-illustration')) return; // already injected
+      var numEl = card.querySelector('strong');
+      if (!numEl) return;
+      var num = numEl.textContent.trim();
+      if (!illustrations[num]) return;
+      var wrapper = document.createElement('div');
+      wrapper.className = 'st-illustration';
+      wrapper.style.cssText = 'display:flex;justify-content:center;align-items:center;padding:14px 0 6px;opacity:0.85;';
+      wrapper.innerHTML = illustrations[num];
+      // Insert after the number container, before the text
+      var numContainer = numEl.closest('[class*="framer-"]');
+      if (numContainer && numContainer.parentNode) {
+        numContainer.parentNode.insertBefore(wrapper, numContainer.nextSibling);
       }
     });
-  })();
+  }
+
+  // Run after DOM is ready and after Framer hydrates
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(injectIllustrations, 300); });
+  } else {
+    setTimeout(injectIllustrations, 300);
+  }
+  setTimeout(injectIllustrations, 1200); // second pass after full hydration
+  setTimeout(injectIllustrations, 3000); // safety net
+})();
 </script>
 	
 	<!-- Start of bodyStart -->
