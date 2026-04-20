@@ -464,19 +464,25 @@
   /* ── Hide original Framer nav ── */
   .framer-1lcmve6 { display: none !important; }
   /* ── Hide second fold tickers ── */
-  .framer-cyj4wy { display: none !important; }
+  .framer-cyj4wy  { display: none !important; }
 
-  /* ── Custom Header — Glassmorphism ── */
+  /* ══════════════════════════════════════════════
+     HEADER — Glassmorphism
+  ══════════════════════════════════════════════ */
   #st-header {
     position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 40px;
+    padding: 16px 40px;                       /* mobile default */
     background: rgba(255, 255, 255, 0.55);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-bottom: 1px solid rgba(255, 255, 255, 0.4);
     box-shadow: 0 1px 24px rgba(0, 0, 0, 0.06);
     font-family: 'Geist', 'Geist Placeholder', sans-serif;
+  }
+  /* Desktop: 2.5× horizontal padding (40→100px) */
+  @media (min-width: 810px) {
+    #st-header { padding: 16px 100px; }
   }
   .st-name {
     font-size: 15px; font-weight: 600; letter-spacing: -0.04em;
@@ -494,7 +500,9 @@
   #st-hamburger.open span:nth-child(2) { opacity: 0; }
   #st-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-  /* ── Dropdown nav — right side panel ── */
+  /* ══════════════════════════════════════════════
+     NAV DROPDOWN — right-side panel
+  ══════════════════════════════════════════════ */
   #st-nav {
     display: none;
     position: fixed; top: 58px; right: 40px;
@@ -505,27 +513,107 @@
     border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 16px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-    padding: 8px 0;
-    z-index: 9998;
-    overflow: hidden;
+    padding: 8px 0; z-index: 9998; overflow: hidden;
   }
   #st-nav.open { display: flex; flex-direction: column; }
   #st-nav a {
     font-family: 'Geist', 'Geist Placeholder', sans-serif;
     font-size: 14px; font-weight: 500; letter-spacing: -0.03em;
     color: #000; text-decoration: none;
-    padding: 12px 20px;
-    transition: background 0.15s;
+    padding: 12px 20px; transition: background 0.15s;
   }
   #st-nav a:hover { background: rgba(0,0,0,0.04); }
-
-  /* ── Push page content below fixed header ── */
-  #main { padding-top: 62px !important; }
-
   @media (max-width: 640px) {
     #st-header { padding: 14px 20px; }
     #st-nav { right: 16px; }
   }
+
+  /* ══════════════════════════════════════════════
+     SECOND FOLD — reduce top/bottom padding 0.7×
+     framer-ts46om is the intro section container
+  ══════════════════════════════════════════════ */
+  /* Desktop: 80px → 56px */
+  .framer-ts46om { padding-top: 56px !important; padding-bottom: 56px !important; }
+  /* Tablet ~810px: 56px → 39px */
+  @media (min-width: 810px) and (max-width: 1439.98px) {
+    .framer-ts46om { padding-top: 39px !important; padding-bottom: 39px !important; }
+  }
+  /* Mobile: 40px → 28px */
+  @media (max-width: 809.98px) {
+    .framer-ts46om { padding-top: 28px !important; padding-bottom: 28px !important; }
+  }
+
+  /* ══════════════════════════════════════════════
+     PROCESS CARDS — mobile height fix
+  ══════════════════════════════════════════════ */
+  @media (max-width: 809.98px) {
+    /* Cards wrapper */
+    .framer-1mpb03n {
+      overflow: visible !important;
+      height: auto !important;
+    }
+    /* Each card item */
+    .framer-12koumt {
+      height: auto !important;
+      overflow: visible !important;
+      flex-shrink: 0 !important;
+    }
+    /* Card inner containers */
+    .framer-hFxSj, .framer-B4GU3 {
+      height: auto !important;
+      overflow: visible !important;
+    }
+    /* Process section outer */
+    #process-cards {
+      height: auto !important;
+      overflow: visible !important;
+    }
+  }
+
+  /* ══════════════════════════════════════════════
+     AFK DETOUR — mobile eyebrow + card centering
+  ══════════════════════════════════════════════ */
+  @media (max-width: 809.98px) {
+    /* Eyebrow tag visibility */
+    .framer-1evcvgy, .framer-sgtebz {
+      display: flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+    /* Center the AFK cards */
+    .framer-191bz3v-container {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      width: 100% !important;
+    }
+    /* Heading content centering */
+    .framer-eiw4av { align-items: center !important; text-align: center !important; }
+  }
+
+  /* ══════════════════════════════════════════════
+     FOOTER — mobile visibility fix
+  ══════════════════════════════════════════════ */
+  @media (max-width: 809.98px) {
+    .framer-n0isp {
+      overflow: visible !important;
+      height: auto !important;
+      padding-bottom: 24px !important;
+    }
+    /* Custom footer also */
+    [data-framer-name="Footer"] {
+      overflow: visible !important;
+      height: auto !important;
+      padding: 24px 20px !important;
+    }
+    .framer-h1fn19, .framer-1lix8my {
+      overflow: visible !important;
+      height: auto !important;
+    }
+  }
+
+  /* ── Push page content below fixed header ── */
+  #main { padding-top: 62px !important; }
 </style>
 
 <header id="st-header">
@@ -577,25 +665,25 @@
   });
 
   // ── Post-render: inject SVG illustrations into process cards ──
+  // 2× larger (112px), positioned slightly upward via negative margin-top
   var illustrations = {
-    '1': '<svg width="56" height="56" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="26" cy="26" r="16" stroke="#000" stroke-width="2.5"/><line x1="37.5" y1="37.5" x2="52" y2="52" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><line x1="20" y1="26" x2="32" y2="26" stroke="#000" stroke-width="2" stroke-linecap="round"/><line x1="26" y1="20" x2="26" y2="32" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg>',
-    '2': '<svg width="56" height="56" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="32,6 58,32 32,58 6,32" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/><polygon points="32,18 46,32 32,46 18,32" fill="rgba(0,0,0,0.07)" stroke="#000" stroke-width="1.5" stroke-linejoin="round"/><circle cx="32" cy="6" r="3" fill="#000"/><circle cx="58" cy="32" r="3" fill="#000"/><circle cx="32" cy="58" r="3" fill="#000"/><circle cx="6" cy="32" r="3" fill="#000"/></svg>',
-    '3': '<svg width="56" height="56" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 52L20 31L43 8L56 21L33 44L12 52Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/><line x1="20" y1="31" x2="33" y2="44" stroke="#000" stroke-width="1.5"/><circle cx="49.5" cy="14.5" r="4" stroke="#000" stroke-width="2"/><line x1="8" y1="56" x2="12" y2="52" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg>'
+    '1': '<svg width="112" height="112" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="26" cy="26" r="16" stroke="#000" stroke-width="2.5"/><line x1="37.5" y1="37.5" x2="52" y2="52" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><line x1="20" y1="26" x2="32" y2="26" stroke="#000" stroke-width="2" stroke-linecap="round"/><line x1="26" y1="20" x2="26" y2="32" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg>',
+    '2': '<svg width="112" height="112" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="32,6 58,32 32,58 6,32" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/><polygon points="32,18 46,32 32,46 18,32" fill="rgba(0,0,0,0.07)" stroke="#000" stroke-width="1.5" stroke-linejoin="round"/><circle cx="32" cy="6" r="3" fill="#000"/><circle cx="58" cy="32" r="3" fill="#000"/><circle cx="32" cy="58" r="3" fill="#000"/><circle cx="6" cy="32" r="3" fill="#000"/></svg>',
+    '3': '<svg width="112" height="112" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 52L20 31L43 8L56 21L33 44L12 52Z" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/><line x1="20" y1="31" x2="33" y2="44" stroke="#000" stroke-width="1.5"/><circle cx="49.5" cy="14.5" r="4" stroke="#000" stroke-width="2"/><line x1="8" y1="56" x2="12" y2="52" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg>'
   };
 
   function injectIllustrations() {
     var cards = document.querySelectorAll('[data-framer-name="Card Item"]');
     cards.forEach(function(card) {
-      if (card.querySelector('.st-illustration')) return; // already injected
+      if (card.querySelector('.st-illustration')) return;
       var numEl = card.querySelector('strong');
       if (!numEl) return;
       var num = numEl.textContent.trim();
       if (!illustrations[num]) return;
       var wrapper = document.createElement('div');
       wrapper.className = 'st-illustration';
-      wrapper.style.cssText = 'display:flex;justify-content:center;align-items:center;padding:14px 0 6px;opacity:0.85;';
+      wrapper.style.cssText = 'display:flex;justify-content:center;align-items:center;padding:8px 0 0;margin-top:-8px;opacity:0.85;';
       wrapper.innerHTML = illustrations[num];
-      // Insert after the number container, before the text
       var numContainer = numEl.closest('[class*="framer-"]');
       if (numContainer && numContainer.parentNode) {
         numContainer.parentNode.insertBefore(wrapper, numContainer.nextSibling);
@@ -603,14 +691,13 @@
     });
   }
 
-  // Run after DOM is ready and after Framer hydrates
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() { setTimeout(injectIllustrations, 300); });
   } else {
     setTimeout(injectIllustrations, 300);
   }
-  setTimeout(injectIllustrations, 1200); // second pass after full hydration
-  setTimeout(injectIllustrations, 3000); // safety net
+  setTimeout(injectIllustrations, 1200);
+  setTimeout(injectIllustrations, 3000);
 })();
 </script>
 	
