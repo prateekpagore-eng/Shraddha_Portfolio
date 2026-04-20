@@ -26,6 +26,7 @@ These files contain the actual rendered content. Changing only `index.html` is n
 | `script_main.CXxzkXGP.mjs` | Footer text: `© Hanzo Studio, 2025` → `©2026 Shraddha Thorat` |
 | `bJ33zZF_tm-XTZ6zgFzqVAnIrpxtZiLmvdPeMrXJ510.tMIsszZD.mjs` | Footer text: `© Hanzo Studio, 2025` → `©2026 Shraddha Thorat` |
 | `shared-lib.D1MmSO8W.mjs` | Meta description: `Hanzo` → `Shraddha Thorat` (2 occurrences) |
+| `PW-h38ugHlefrPpVcoOjo4n8GXcAguncpMk6oCz9kC8.DhJ9gF0g.mjs` | About image: all 12 refs of `zRVCa2eOgJIf1mJK5PYcBLrYI.png` → `shraddha-photo.png`. Also contains process card titles (Understand/Shape/Craft). |
 
 ---
 
@@ -65,13 +66,17 @@ These files contain the actual rendered content. Changing only `index.html` is n
 All injected immediately after `<body>`:
 
 ### 1. Custom Header (`#st-header`)
-- Fixed top bar, white frosted glass background
+- Fixed top bar, glassmorphism: `background: rgba(255,255,255,0.55)`, `backdrop-filter: blur(20px) saturate(180%)`
+- `border-bottom: 1px solid rgba(255,255,255,0.4)` + subtle box-shadow
 - "Shraddha Thorat" wordmark (left) + hamburger button (right)
-- Hamburger opens `#st-nav` dropdown with scroll links
+- Hamburger opens `#st-nav` dropdown; closes on outside click
 - Smooth-scroll JS listener for all `a[href^="#"]` links
 
 ### 2. Custom Nav (`#st-nav`)
-Links: Process (`#process`) · Work (`#work`) · About (`#about-1`) · Contact (`#experience`)
+- **Right-aligned panel** — `position: fixed; top: 58px; right: 40px; width: 200px`
+- Frosted glass: `background: rgba(255,255,255,0.75)`, `backdrop-filter: blur(24px) saturate(180%)`
+- `border-radius: 16px`, `box-shadow: 0 8px 32px rgba(0,0,0,0.12)`
+- Links: Process (`#process`) · Work (`#work`) · About (`#about-1`) · Contact (`#experience`)
 
 ### 3. CSS Overrides (`<style id="st-custom">`)
 - Hides `.framer-1lcmve6` (original Framer nav)
@@ -91,18 +96,15 @@ Links: Process (`#process`) · Work (`#work`) · About (`#about-1`) · Contact (
 
 ## Process Cards — Illustrations
 
-SVG illustrations injected inside `.framer-3649hr` (after the number, before `.framer-5dwcuy`):
+SVG illustrations are injected **post-render via JavaScript** (not static HTML, because Framer hydration wipes static injections).
+
+The script in `index.html` runs at 300ms / 1200ms / 3000ms after load, targets `[data-framer-name="Card Item"]`, finds the `<strong>` number, and inserts an `.st-illustration` div before the text section. Guards against double-injection with `if (card.querySelector('.st-illustration')) return`.
 
 | Card | Number | Illustration |
 |------|--------|-------------|
 | Understand | 1 | Magnifying glass with crosshairs |
 | Shape | 2 | Diamond wireframe with corner anchor points |
-| Craft | 3 | Pencil/tool path illustration |
-
-Injected pattern:
-```
-<number div>N</number div>  →  <number div>N</number div>[SVG]</div><div class="framer-5dwcuy">
-```
+| Craft | 3 | Pencil/tool illustration |
 
 ---
 
