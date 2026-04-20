@@ -82,6 +82,11 @@ All injected immediately after `<body>`:
 - Hides `.framer-1lcmve6` (original Framer nav)
 - Hides `.framer-cyj4wy` (scrolling tickers — second fold)
 - Adds `padding-top: 62px` to `#main`
+- **Desktop header padding:** `@media (min-width: 810px)` → `padding: 16px 100px` (2.5× the 40px default)
+- **Second fold (`.framer-ts46om`) padding 0.7×:** `56px 0` desktop, `39px 0` tablet, `28px 0` mobile
+- **Process cards mobile:** `height:auto !important; overflow:visible !important` on `.framer-12koumt`, `.framer-1mpb03n`, `.framer-hFxSj`, `#process-cards`
+- **AFK Detour mobile:** Force `.framer-1evcvgy`/`.framer-sgtebz` visible; center `.framer-191bz3v-container` and `.framer-eiw4av`
+- **Footer mobile:** `overflow:visible; height:auto; padding-bottom:24px` on `.framer-n0isp`
 
 ---
 
