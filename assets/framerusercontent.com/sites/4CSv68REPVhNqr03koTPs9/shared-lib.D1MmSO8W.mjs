@@ -1,0 +1,2 @@
+import{t as e}from"./rolldown-runtime.rCxdvAvM.mjs";function t(e,t){return{description:`Hanzo is a free minimal and elegant portfolio template made for product, software, and digital designers to share their work quickly and effectively.`,robots:`max-image-preview:large`,title:`Hanzo — a Design Craftsman's Portfolio Template`}}var n=e((()=>{}));export{t as n,n as t};
+//# sourceMappingURL=shared-lib.D1MmSO8W.mjs.map
