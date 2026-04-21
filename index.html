@@ -612,6 +612,9 @@
     }
   }
 
+  /* ── Case study card thumbnails — hidden ── */
+  .framer-nygabs { display: none !important; }
+
   /* ── Push page content below fixed header ── */
   #main { padding-top: 62px !important; }
 </style>
@@ -691,13 +694,39 @@
     });
   }
 
+  // Initial injection after Framer's first render
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() { setTimeout(injectIllustrations, 300); });
   } else {
     setTimeout(injectIllustrations, 300);
   }
-  setTimeout(injectIllustrations, 1200);
-  setTimeout(injectIllustrations, 3000);
+  // MutationObserver: re-inject immediately whenever Framer re-renders process cards
+  var illustrationDebounce;
+  var illustrationObserver = new MutationObserver(function() {
+    clearTimeout(illustrationDebounce);
+    illustrationDebounce = setTimeout(injectIllustrations, 50);
+  });
+  // Start observing once DOM is ready; fall back to body if section not yet present
+  function startIllustrationObserver() {
+    var target = document.getElementById('process-cards') || document.body;
+    illustrationObserver.observe(target, { childList: true, subtree: true });
+    // If we attached to body, upgrade to #process-cards once it appears
+    if (!document.getElementById('process-cards')) {
+      var upgradeTimer = setInterval(function() {
+        var pc = document.getElementById('process-cards');
+        if (pc) {
+          illustrationObserver.disconnect();
+          illustrationObserver.observe(pc, { childList: true, subtree: true });
+          clearInterval(upgradeTimer);
+        }
+      }, 200);
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startIllustrationObserver);
+  } else {
+    startIllustrationObserver();
+  }
 
   // ── Force real photo in about-me section after Framer hydration ──
   function fixAboutImage() {
