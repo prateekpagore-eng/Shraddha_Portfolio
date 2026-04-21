@@ -95,7 +95,10 @@ All injected immediately after `<body>`:
 - **HTML selector:** `img` inside `#about-1 .framer-1c0vbc5`
 - **Old URL:** `https://framerusercontent.com/images/zRVCa2eOgJIf1mJK5PYcBLrYI.png`
 - **New path:** `assets/shraddha-photo.png`
-- Replace all occurrences of the old URL (appears ~4x with query params like `?width=`, `?scale-down-to=`)
+- Patched in `PW-h38ug...mjs` — all 12 refs changed to `/assets/shraddha-photo.png`
+- Static HTML `<img>` tag: srcset/src cleaned of Framer CDN query params (`?scale-down-to`, `?width=`, `?height=`)
+- Post-render JS `fixAboutImage()` runs at 400ms/1500ms/3500ms to force `.framer-1c0vbc5 img` src after Framer hydration
+- **Favicon:** All `<link rel="icon">` and `<link rel="apple-touch-icon">` tags removed from `<head>`
 
 ---
 
