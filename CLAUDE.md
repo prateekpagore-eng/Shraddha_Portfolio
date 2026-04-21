@@ -15,23 +15,9 @@ Framer-exported static site, rebranded from the "Hanzo" template. Deployed on Ve
 
 ---
 
-## ⚡ Architecture Note — Framer Hydration DISABLED
+## Patched MJS Asset Files
 
-`script_main.CXxzkXGP.mjs` (the sole external script tag) has been **removed**.
-Framer's React engine no longer loads, so the page is served as **pure static HTML**.
-
-**Benefits:**
-- `index.html` edits are permanent — nothing overrides them
-- MJS files no longer need to be patched for content changes
-- No more "reverts after a second" behaviour
-
-**What still works:** All inline scripts (animator, appear effects, breakpoints, smooth scroll), our custom header/nav/JS.
-
-> ⚠️ If Framer animations break in future, patch the relevant inline `<script>` blocks in `index.html` directly — do NOT re-enable script_main.
-
-## MJS Files (historical — no longer active)
-
-The MJS files below were patched before hydration was disabled. They are still on disk but are no longer loaded.
+These files contain the actual rendered content. Changing only `index.html` is not enough — Framer JS re-hydrates and overwrites.
 
 | File | What was changed |
 |------|-----------------|
@@ -40,7 +26,7 @@ The MJS files below were patched before hydration was disabled. They are still o
 | `script_main.CXxzkXGP.mjs` | Footer text: `© Hanzo Studio, 2025` → `©2026 Shraddha Thorat` |
 | `bJ33zZF_tm-XTZ6zgFzqVAnIrpxtZiLmvdPeMrXJ510.tMIsszZD.mjs` | Footer text: `© Hanzo Studio, 2025` → `©2026 Shraddha Thorat` |
 | `shared-lib.D1MmSO8W.mjs` | Meta description: `Hanzo` → `Shraddha Thorat` (2 occurrences) |
-| `PW-h38ugHlefrPpVcoOjo4n8GXcAguncpMk6oCz9kC8.DhJ9gF0g.mjs` | About image: all 12 refs replaced with transparent 1px gif placeholder. |
+| `PW-h38ugHlefrPpVcoOjo4n8GXcAguncpMk6oCz9kC8.DhJ9gF0g.mjs` | About image: all 12 refs of `zRVCa2eOgJIf1mJK5PYcBLrYI.png` → `shraddha-photo.png`. Also contains process card titles (Understand/Shape/Craft). |
 
 ---
 
