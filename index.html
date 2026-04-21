@@ -613,7 +613,12 @@
   }
 
   /* ── Case study card thumbnails — hidden ── */
-  .framer-nygabs { display: none !important; }
+  /* Case study card thumbnails — replace with placeholder */
+  .framer-nygabs img { opacity: 0 !important; }
+  .framer-nygabs {
+    background: linear-gradient(135deg, #f0ede8 0%, #e5e0d8 100%) !important;
+    position: relative !important;
+  }
 
   /* ── Push page content below fixed header ── */
   #main { padding-top: 62px !important; }
@@ -694,39 +699,26 @@
     });
   }
 
-  // Initial injection after Framer's first render
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() { setTimeout(injectIllustrations, 300); });
-  } else {
-    setTimeout(injectIllustrations, 300);
-  }
-  // MutationObserver: re-inject immediately whenever Framer re-renders process cards
+  // Inject on multiple timeouts so we catch Framer's hydration whenever it finishes
+  setTimeout(injectIllustrations, 300);
+  setTimeout(injectIllustrations, 1000);
+  setTimeout(injectIllustrations, 2500);
+  setTimeout(injectIllustrations, 5000);
+
+  // MutationObserver ONLY on #process-cards (never body — body is too noisy with animations)
   var illustrationDebounce;
   var illustrationObserver = new MutationObserver(function() {
     clearTimeout(illustrationDebounce);
-    illustrationDebounce = setTimeout(injectIllustrations, 50);
+    illustrationDebounce = setTimeout(injectIllustrations, 80);
   });
-  // Start observing once DOM is ready; fall back to body if section not yet present
-  function startIllustrationObserver() {
-    var target = document.getElementById('process-cards') || document.body;
-    illustrationObserver.observe(target, { childList: true, subtree: true });
-    // If we attached to body, upgrade to #process-cards once it appears
-    if (!document.getElementById('process-cards')) {
-      var upgradeTimer = setInterval(function() {
-        var pc = document.getElementById('process-cards');
-        if (pc) {
-          illustrationObserver.disconnect();
-          illustrationObserver.observe(pc, { childList: true, subtree: true });
-          clearInterval(upgradeTimer);
-        }
-      }, 200);
+  // Poll until #process-cards exists, then attach observer (skip body entirely)
+  var pcPollTimer = setInterval(function() {
+    var pc = document.getElementById('process-cards');
+    if (pc) {
+      clearInterval(pcPollTimer);
+      illustrationObserver.observe(pc, { childList: true, subtree: true });
     }
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', startIllustrationObserver);
-  } else {
-    startIllustrationObserver();
-  }
+  }, 250);
 
   // ── Force real photo in about-me section after Framer hydration ──
   function fixAboutImage() {
