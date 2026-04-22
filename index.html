@@ -457,6 +457,8 @@
 <style id="custom-overrides">
   /* Hide second fold scrolling images section */
   .framer-cyj4wy { display: none !important; }
+  /* ── Hide experience/contact section (footer coming later) ── */
+  #experience { display: none !important; }
 </style>
 </head>
 <body>
@@ -635,13 +637,30 @@
     /* intentionally not overriding — let Framer token handle #d9d9d9 body */
   }
 
-  /* ══════════════════════════════════════════════
-     AFK SECTION — neutralize dark inner card backgrounds
-  ══════════════════════════════════════════════ */
-  .framer-lo5toe .framer-1a56uwu,
-  .framer-lo5toe .framer-nlltkq {
+    /* ══════════════════════════════
+     SECTIONS 3–6 — match Section 2 background (#d9d9d9)
+  ══════════════════════════════ */
+  /* Layer 1: section root containers */
+  #work,
+  .framer-lo5toe,
+  #process,
+  #process-cards,
+  #about-1 {
     background-color: #d9d9d9 !important;
-    border-color: rgba(0,0,0,0.15) !important;
+  }
+  /* Layer 2: direct div children (section-level wrappers) */
+  #work > div,
+  .framer-lo5toe > div,
+  #process > div,
+  #about-1 > div {
+    background-color: #d9d9d9 !important;
+  }
+  /* Layer 3: known dark AFK inner elements */
+  .framer-lo5toe .framer-1a56uwu,
+  .framer-lo5toe .framer-nlltkq,
+  .framer-lo5toe .framer-1klq51g {
+    background-color: #d9d9d9 !important;
+    background-image: none !important;
     box-shadow: none !important;
   }
 
@@ -650,66 +669,13 @@
   ══════════════════════════════════════════════ */
   /* The hero section wrapper has scroll-margin-top:80px and padding:0 120px.
      Reduce the hero's top scroll-margin and add a negative offset inside. */
-  #hero { margin-top: -16px !important; }
+  #hero { margin-top: -32px !important; }
 
   /* ══════════════════════════════════════════════
      FOOTER — hide original Framer footer
   ══════════════════════════════════════════════ */
   .framer-n0isp { display: none !important; }
 
-  /* ══════════════════════════════════════════════
-     CUSTOM FOOTER — "Let's Connect"
-  ══════════════════════════════════════════════ */
-  #st-footer {
-    background: #141414;
-    color: #fff;
-    font-family: 'Geist', 'Geist Placeholder', sans-serif;
-    padding: 80px 120px 40px;
-    box-sizing: border-box;
-  }
-  #st-footer .st-footer-heading {
-    font-family: 'Antonio', sans-serif;
-    font-size: 72px;
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: -0.03em;
-    color: #fff;
-    margin-bottom: 24px;
-  }
-  #st-footer .st-footer-sub {
-    font-size: 16px;
-    line-height: 1.6;
-    color: rgba(255,255,255,0.6);
-    max-width: 520px;
-    margin-bottom: 40px;
-  }
-  #st-footer .st-footer-cta {
-    display: inline-block;
-    font-size: 15px;
-    font-weight: 500;
-    color: #141414;
-    background: #fff;
-    text-decoration: none;
-    padding: 14px 32px;
-    border-radius: 100px;
-    transition: opacity 0.2s;
-    margin-bottom: 80px;
-  }
-  #st-footer .st-footer-cta:hover { opacity: 0.85; }
-  #st-footer .st-footer-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 24px;
-    border-top: 1px solid rgba(255,255,255,0.12);
-    font-size: 13px;
-    color: rgba(255,255,255,0.4);
-  }
-  @media (max-width: 809.98px) {
-    #st-footer { padding: 60px 24px 32px; }
-    #st-footer .st-footer-heading { font-size: 44px; }
-    #st-footer .st-footer-bar { flex-direction: column; gap: 8px; text-align: center; }
-  }
 </style>
 
 <header id="st-header">
@@ -722,7 +688,6 @@
   <a href="#process">Process</a>
   <a href="#work">Work</a>
   <a href="#about-1">About</a>
-  <a href="#experience">Contact</a>
 </nav>
 
 <script>
@@ -846,34 +811,10 @@
       }
     });
   }
-
-  // Change 2: Inject custom "Let's Connect" footer
-  function injectFooter() {
-    if (document.getElementById('st-footer')) return;
-    var framerFooter = document.querySelector('.framer-n0isp');
-    if (!framerFooter) return;
-    framerFooter.style.display = 'none';
-    var footer = document.createElement('div');
-    footer.id = 'st-footer';
-    footer.innerHTML = [
-      '<div class="st-footer-heading">Let\'s Connect</div>',
-      '<p class="st-footer-sub">Feel free to reach out if you have a project in mind. I\'m available for new opportunities or just a chat.</p>',
-      '<a class="st-footer-cta" href="mailto:shraddha@example.com">shraddha@example.com</a>',
-      '<div class="st-footer-bar">',
-      '  <span>\u00a92026 Shraddha Thorat. All rights reserved.</span>',
-      '  <span>Product Designer</span>',
-      '</div>'
-    ].join('');
-    framerFooter.parentNode.insertBefore(footer, framerFooter.nextSibling);
-  }
-
   setTimeout(patchCaseStudyCards, 300);
   setTimeout(patchCaseStudyCards, 1200);
   setTimeout(patchCaseStudyCards, 3000);
 
-  setTimeout(injectFooter, 400);
-  setTimeout(injectFooter, 1500);
-  setTimeout(injectFooter, 3500);
 
   // MutationObserver to keep patches alive after hydration
   var patchDebounce;
@@ -881,7 +822,6 @@
     clearTimeout(patchDebounce);
     patchDebounce = setTimeout(function() {
       patchCaseStudyCards();
-      injectFooter();
     }, 120);
   });
   var bodyPollTimer = setInterval(function() {

@@ -117,15 +117,15 @@
 
     /* ── PDF viewer ── */
     .cs-pdf-wrapper {
-      background: #fff;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 4px 40px rgba(0,0,0,0.10);
+      background: none;
+      border-radius: 0;
+      overflow: visible;
+      box-shadow: none;
     }
     .cs-pdf-wrapper iframe {
       display: block;
       width: 100%;
-      height: 82vh;
+      height: 90vh;
       border: none;
     }
     .cs-pdf-fallback {
@@ -171,9 +171,6 @@
       </iframe>
     </div>
 
-    <div class="cs-pdf-fallback" style="padding:20px 0 0; text-align:left;">
-      <a href="../pdfs/kyoho.pdf" target="_blank" download>Download PDF</a>
-    </div>
   </main>
 </body>
 </html>
