@@ -811,7 +811,16 @@
       }
     });
   }
-  setTimeout(patchCaseStudyCards, 300);
+  // ── Hard-hide sections that should not appear ──
+  function hideRemovedSections() {
+    var exp = document.getElementById('experience');
+    if (exp) { exp.style.setProperty('display','none','important'); }
+  }
+  hideRemovedSections();
+  setTimeout(hideRemovedSections, 200);
+  setTimeout(hideRemovedSections, 1000);
+
+    setTimeout(patchCaseStudyCards, 300);
   setTimeout(patchCaseStudyCards, 1200);
   setTimeout(patchCaseStudyCards, 3000);
 
