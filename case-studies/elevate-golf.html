@@ -1,9 +1,9 @@
 <!doctype html>
 <!--
   Elevate Golf — Case Study
-  Standalone page: NO Framer JS, no hydration, no MJS bundles.
-  PDF is served from ../pdfs/elevate-golf.pdf (committed to repo).
-  Back link: ../index.html (full page reload; Framer hydrates normally on portfolio).
+  PDF rendered via PDF.js (canvas) — no iframe, no PDF chrome, looks like a normal page.
+  PDF file: ../pdfs/elevate-golf.pdf
+  Back: ../index.html
 -->
 <html lang="en">
 <head>
@@ -16,7 +16,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;700&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
     body {
       background: #d9d9d9;
       color: #111;
@@ -33,7 +32,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 16px 100px;
-      background: rgba(217, 217, 217, 0.7);
+      background: rgba(217, 217, 217, 0.75);
       backdrop-filter: blur(20px) saturate(180%);
       -webkit-backdrop-filter: blur(20px) saturate(180%);
       border-bottom: 1px solid rgba(255,255,255,0.5);
@@ -62,67 +61,29 @@
       #cs-header { padding: 14px 20px; }
     }
 
-    /* ── Main layout ── */
-    .cs-main {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 60px 40px 80px;
-    }
-    @media (max-width: 809px) {
-      .cs-main { padding: 40px 20px 60px; }
-    }
-
-    /* ── Hero info ── */
-    .cs-hero {
-      margin-bottom: 48px;
-    }
-    .cs-tag {
-      display: inline-block;
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(0,0,0,0.5);
-      background: rgba(0,0,0,0.07);
-      padding: 6px 14px;
-      border-radius: 100px;
-      margin-bottom: 20px;
-    }
-    .cs-title {
-      font-family: 'Antonio', sans-serif;
-      font-size: 72px;
-      font-weight: 700;
-      line-height: 1;
-      letter-spacing: -0.03em;
-      color: #111;
-      margin-bottom: 12px;
-    }
-    .cs-subtitle {
-      font-family: 'Antonio', sans-serif;
-      font-size: 32px;
-      font-weight: 400;
-      color: rgba(0,0,0,0.45);
-      margin-bottom: 20px;
-    }
-    .cs-desc {
-      font-size: 16px;
-      line-height: 1.65;
-      color: rgba(0,0,0,0.6);
-      max-width: 640px;
-    }
-    @media (max-width: 809px) {
-      .cs-title { font-size: 44px; }
-      .cs-subtitle { font-size: 22px; }
-    }
-
-    /* ── PDF viewer — full-bleed, no card ── */
-    .cs-pdf-embed {
-      display: block;
+    /* ── PDF canvas pages ── */
+    #pdf-container {
       width: 100%;
-      height: 100vh;
-      border: none;
+      background: #d9d9d9;
+    }
+    #pdf-container canvas {
+      display: block;
+      width: 100% !important;
+      height: auto !important;
       margin: 0;
       padding: 0;
+    }
+
+    /* ── Loading state ── */
+    #pdf-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 40px;
+      font-size: 15px;
+      color: rgba(0,0,0,0.4);
+      font-family: 'Geist', sans-serif;
+      letter-spacing: -0.02em;
     }
   </style>
 </head>
@@ -135,19 +96,51 @@
     </a>
   </header>
 
-  <main class="cs-main">
-    <div class="cs-hero">
-      <div class="cs-tag">Website Design</div>
-      <h1 class="cs-title">Elevate Golf</h1>
-      <p class="cs-subtitle">Website Design</p>
-      <p class="cs-desc">A premium digital experience for a golf brand — balancing performance, aesthetics, and conversion. Designed to feel as refined as the sport itself.</p>
-    </div>
-  </main>
+  <div id="pdf-loading">Loading case study…</div>
+  <div id="pdf-container"></div>
 
-  <iframe
-    class="cs-pdf-embed"
-    src="../pdfs/elevate-golf.pdf"
-    title="Elevate Golf Case Study PDF"
-  ></iframe>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    var pdfUrl = '../pdfs/elevate-golf.pdf';
+    var container = document.getElementById('pdf-container');
+    var loading  = document.getElementById('pdf-loading');
+
+    pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+      loading.style.display = 'none';
+
+      // Pre-create canvases in order so pages appear top-to-bottom
+      var canvases = [];
+      for (var i = 0; i < pdf.numPages; i++) {
+        var canvas = document.createElement('canvas');
+        container.appendChild(canvas);
+        canvases.push(canvas);
+      }
+
+      // Render each page into its pre-placed canvas
+      for (var pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+        (function(canvas, num) {
+          pdf.getPage(num).then(function(page) {
+            var containerWidth = container.offsetWidth || window.innerWidth;
+            var baseViewport   = page.getViewport({ scale: 1 });
+            var scale          = containerWidth / baseViewport.width;
+            var viewport       = page.getViewport({ scale: scale });
+
+            canvas.width  = viewport.width;
+            canvas.height = viewport.height;
+
+            page.render({
+              canvasContext: canvas.getContext('2d'),
+              viewport: viewport
+            });
+          });
+        })(canvases[pageNum - 1], pageNum);
+      }
+    }).catch(function(err) {
+      loading.textContent = 'Could not load PDF. ' + err.message;
+    });
+  </script>
 </body>
 </html>
