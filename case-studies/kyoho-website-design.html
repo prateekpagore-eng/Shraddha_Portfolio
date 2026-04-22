@@ -115,30 +115,14 @@
       .cs-subtitle { font-size: 22px; }
     }
 
-    /* ── PDF viewer ── */
-    .cs-pdf-wrapper {
-      background: none;
-      border-radius: 0;
-      overflow: visible;
-      box-shadow: none;
-    }
-    .cs-pdf-wrapper iframe {
+    /* ── PDF viewer — full-bleed, no card ── */
+    .cs-pdf-embed {
       display: block;
       width: 100%;
-      height: 90vh;
+      height: 100vh;
       border: none;
-    }
-    .cs-pdf-fallback {
-      padding: 32px;
-      text-align: center;
-      font-size: 15px;
-      color: rgba(0,0,0,0.5);
-    }
-    .cs-pdf-fallback a {
-      color: #111;
-      font-weight: 600;
-      text-decoration: underline;
-      text-underline-offset: 3px;
+      margin: 0;
+      padding: 0;
     }
   </style>
 </head>
@@ -158,19 +142,12 @@
       <p class="cs-subtitle">Website Design</p>
       <p class="cs-desc">A clean, brand-forward website design for Kyoho — crafting a digital presence that reflects the brand's identity and connects with its audience.</p>
     </div>
-
-    <div class="cs-pdf-wrapper">
-      <iframe
-        src="../pdfs/kyoho.pdf"
-        title="Kyoho Website Design Case Study PDF"
-      >
-        <div class="cs-pdf-fallback">
-          <p>Your browser does not support inline PDFs.</p>
-          <p><a href="../pdfs/kyoho.pdf" target="_blank">Download the Kyoho case study PDF</a></p>
-        </div>
-      </iframe>
-    </div>
-
   </main>
+
+  <iframe
+    class="cs-pdf-embed"
+    src="../pdfs/kyoho.pdf"
+    title="Kyoho Website Design Case Study PDF"
+  ></iframe>
 </body>
 </html>
