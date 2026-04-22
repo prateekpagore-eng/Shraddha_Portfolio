@@ -457,8 +457,8 @@
 <style id="custom-overrides">
   /* Hide second fold scrolling images section */
   .framer-cyj4wy { display: none !important; }
-  /* ── Hide experience/contact section (footer coming later) ── */
-  #experience { display: none !important; }
+  /* ── Hide dark footer CTA (keep experience work history visible) ── */
+  .framer-a9F2W { display: none !important; }
 </style>
 </head>
 <body>
@@ -811,14 +811,6 @@
       }
     });
   }
-  // ── Hard-hide sections that should not appear ──
-  function hideRemovedSections() {
-    var exp = document.getElementById('experience');
-    if (exp) { exp.style.setProperty('display','none','important'); }
-  }
-  hideRemovedSections();
-  setTimeout(hideRemovedSections, 200);
-  setTimeout(hideRemovedSections, 1000);
 
     setTimeout(patchCaseStudyCards, 300);
   setTimeout(patchCaseStudyCards, 1200);
