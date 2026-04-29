@@ -273,11 +273,11 @@
   setTimeout(fixAboutImage, 1500);
   setTimeout(fixAboutImage, 3500);
 
-  // ── AFK Detour gallery — load images from afk-manifest.json ──
-  function buildAFKGallery(images) {
+  // ── AFK Detour — 3D carousel ──
+  function buildAFKCarousel(images) {
     var container = document.querySelector('.framer-191bz3v-container');
     if (!container) return;
-    if (container.querySelector('.st-afk-gallery')) return;
+    if (container.querySelector('.st-afk-wrap')) return;
 
     // Hide Framer's built-in carousel
     var inner = container.firstElementChild;
@@ -285,31 +285,134 @@
 
     if (!images || images.length === 0) return;
 
-    var gallery = document.createElement('div');
-    gallery.className = 'st-afk-gallery';
+    // Build DOM
+    var wrap = document.createElement('div');
+    wrap.className = 'st-afk-wrap';
+
+    var scene = document.createElement('div');
+    scene.className = 'st-afk-scene';
+
+    var drum = document.createElement('div');
+    drum.className = 'st-afk-drum';
 
     images.forEach(function(src) {
-      var item = document.createElement('div');
-      item.className = 'st-afk-item';
+      var card = document.createElement('div');
+      card.className = 'st-afk-card';
       var img = document.createElement('img');
       img.src = src;
       img.alt = '';
       img.loading = 'lazy';
-      item.appendChild(img);
-      gallery.appendChild(item);
+      card.appendChild(img);
+      drum.appendChild(card);
     });
 
-    container.appendChild(gallery);
+    scene.appendChild(drum);
+
+    var prev = document.createElement('button');
+    prev.className = 'st-afk-arr st-afk-prev';
+    prev.innerHTML = '&#8592;';
+    prev.setAttribute('aria-label', 'Previous');
+
+    var next = document.createElement('button');
+    next.className = 'st-afk-arr st-afk-next';
+    next.innerHTML = '&#8594;';
+    next.setAttribute('aria-label', 'Next');
+
+    wrap.appendChild(prev);
+    wrap.appendChild(scene);
+    wrap.appendChild(next);
+    container.appendChild(wrap);
+
+    // ── 3D carousel logic ──
+    var cards = drum.querySelectorAll('.st-afk-card');
+    var N = cards.length;
+    var THETA = 360 / N;
+    var RADIUS = window.innerWidth <= 809 ? 220 : 320;
+    var SPEED = 0.2;
+    var angle = 0, paused = false, snapping = false, snapTarget = 0;
+
+    function layoutCards() {
+      RADIUS = window.innerWidth <= 809 ? 220 : 320;
+      for (var i = 0; i < N; i++) {
+        cards[i].style.transform = 'rotateY(' + (THETA * i) + 'deg) translateZ(' + RADIUS + 'px)';
+      }
+    }
+
+    function applyAngle() {
+      drum.style.transform = 'translateX(-50%) rotateY(' + angle + 'deg)';
+    }
+
+    function tick() {
+      if (snapping) {
+        var diff = snapTarget - angle;
+        while (diff > 180) diff -= 360;
+        while (diff < -180) diff += 360;
+        angle += diff * 0.12;
+        if (Math.abs(diff) < 0.2) { angle = snapTarget; snapping = false; }
+        applyAngle();
+      } else if (!paused) {
+        angle -= SPEED;
+        applyAngle();
+      }
+      requestAnimationFrame(tick);
+    }
+
+    prev.addEventListener('click', function() {
+      snapTarget = Math.round(angle / THETA) * THETA + THETA;
+      snapping = true;
+    });
+    next.addEventListener('click', function() {
+      snapTarget = Math.round(angle / THETA) * THETA - THETA;
+      snapping = true;
+    });
+
+    scene.addEventListener('mouseenter', function() { paused = true; });
+    scene.addEventListener('mouseleave', function() { paused = false; });
+
+    // Drag support
+    var dragActive = false, mouseDownX = 0, dragBaseAngle = 0;
+    scene.addEventListener('mousedown', function(e) {
+      if (e.button !== 0) return;
+      mouseDownX = e.clientX; dragBaseAngle = angle;
+      dragActive = false;
+      e.preventDefault();
+      function onMove(e) {
+        var dx = e.clientX - mouseDownX;
+        if (!dragActive && Math.abs(dx) > 5) { dragActive = true; paused = true; }
+        if (dragActive) { angle = dragBaseAngle + (dx / scene.offsetWidth) * 180; applyAngle(); }
+      }
+      function onUp() {
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        if (dragActive) { dragActive = false; paused = false; snapTarget = Math.round(angle / THETA) * THETA; snapping = true; }
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+
+    // Touch support
+    var touchStartX = null;
+    scene.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; paused = true; }, { passive: true });
+    scene.addEventListener('touchend', function(e) {
+      if (touchStartX === null) return;
+      var dx = e.changedTouches[0].clientX - touchStartX;
+      paused = false;
+      if (Math.abs(dx) > 40) { snapTarget = Math.round(angle / THETA) * THETA + (dx > 0 ? THETA : -THETA); snapping = true; }
+      touchStartX = null;
+    }, { passive: true });
+
+    window.addEventListener('resize', layoutCards);
+    layoutCards();
+    tick();
   }
 
-  function initAFKGallery() {
+  function initAFKCarousel() {
     fetch('afk-manifest.json')
       .then(function(r) { return r.json(); })
       .then(function(images) {
-        buildAFKGallery(images);
-        // Retry after Framer hydration in case container wasn't in DOM yet
-        setTimeout(function() { buildAFKGallery(images); }, 1500);
-        setTimeout(function() { buildAFKGallery(images); }, 4000);
+        buildAFKCarousel(images);
+        setTimeout(function() { buildAFKCarousel(images); }, 1500);
+        setTimeout(function() { buildAFKCarousel(images); }, 4000);
       })
       .catch(function() {});
   }
@@ -318,7 +421,7 @@
   var afkPollTimer = setInterval(function() {
     if (document.querySelector('.framer-191bz3v-container')) {
       clearInterval(afkPollTimer);
-      initAFKGallery();
+      initAFKCarousel();
     }
   }, 300);
   setTimeout(function() { clearInterval(afkPollTimer); }, 15000);
