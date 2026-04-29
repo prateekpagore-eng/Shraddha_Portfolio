@@ -175,9 +175,11 @@
     /* ══════════════════════════════
      SECTIONS 3–6 — match Section 2 background (#d9d9d9)
   ══════════════════════════════ */
+  /* Hide old Framer AFK section — replaced by #st-afk-section */
+  .framer-lo5toe { display: none !important; }
+
   /* Layer 1: section root containers */
   #work,
-  .framer-lo5toe,
   #process,
   #process-cards,
   #about-1 {
@@ -185,18 +187,9 @@
   }
   /* Layer 2: direct div children (section-level wrappers) */
   #work > div,
-  .framer-lo5toe > div,
   #process > div,
   #about-1 > div {
     background-color: #d9d9d9 !important;
-  }
-  /* Layer 3: known dark AFK inner elements */
-  .framer-lo5toe .framer-1a56uwu,
-  .framer-lo5toe .framer-nlltkq,
-  .framer-lo5toe .framer-1klq51g {
-    background-color: #d9d9d9 !important;
-    background-image: none !important;
-    box-shadow: none !important;
   }
 
   /* ══════════════════════════════════════════════
@@ -211,10 +204,7 @@
   ══════════════════════════════════════════════ */
   .framer-n0isp { display: none !important; }
 
-  /* ── AFK section: allow entrance animations to overflow container ── */
-  .framer-lo5toe { overflow: visible !important; }
-
-  /* ── Coming soon card badge ── */
+/* ── Coming soon card badge ── */
   .st-coming-soon {
     position: absolute; top: 12px; left: 12px;
     background: rgba(0,0,0,0.72); color: #fff;
@@ -238,7 +228,7 @@
     width: 100%;
     max-width: 1440px;
     margin: 0 auto;
-    padding: 0 60px;
+    padding: 0 120px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -399,8 +389,8 @@
   }
   .st-afk-arr svg { width: 20px; height: 20px; display: block; }
   .st-afk-arr:hover { background: rgba(0, 0, 0, 0.75); border-color: rgba(255,255,255,0.45); }
-  .st-afk-prev { left: 60px; }
-  .st-afk-next { right: 60px; }
+  .st-afk-prev { left: 120px; }
+  .st-afk-next { right: 120px; }
 
   @media (max-width: 809.98px) {
     .st-afk-scene { height: 320px; perspective: 1400px; }
