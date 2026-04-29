@@ -231,13 +231,14 @@
     background-color: #d9d9d9;
     width: 100%;
     padding: 80px 0 100px;
-    overflow: hidden;
+    position: relative;
   }
 
   .st-afk-inner {
     width: 100%;
     max-width: 1440px;
     margin: 0 auto;
+    padding: 0 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -248,32 +249,50 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 10px;
     text-align: center;
+    width: 100%;
+  }
+
+  /* Eyebrow row: line — text — line, matching framer-sgtebz */
+  .st-afk-eyebrow-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .st-afk-line {
+    flex: 0 0 69px;
+    height: 1px;
+    opacity: 0.5;
+  }
+  .st-afk-line-l {
+    background: linear-gradient(90deg, rgba(84,84,84,0) 0%, rgba(0,0,0,0.5) 100%);
+  }
+  .st-afk-line-r {
+    background: linear-gradient(270deg, rgba(84,84,84,0) 0%, rgba(0,0,0,0.5) 100%);
   }
 
   .st-afk-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    padding: 6px 16px;
-    border-radius: 100px;
-    background: rgba(0, 0, 0, 0.08);
-    font-family: 'Geist', 'Geist Placeholder', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.01em;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 24px;
+    font-style: italic;
+    font-weight: 400;
     color: #000;
+    white-space: nowrap;
   }
-  .st-afk-eyebrow em { font-style: italic; }
 
   .st-afk-heading {
-    font-family: 'Antonio', sans-serif;
-    font-size: clamp(40px, 6vw, 80px);
+    font-family: 'Inter Display', 'Inter', sans-serif;
+    font-size: 48px;
     font-weight: 400;
     letter-spacing: -0.03em;
-    line-height: 1;
+    line-height: 1.1;
     color: #000;
     margin: 0;
+    text-align: center;
   }
 
   #st-afk-carousel-root {
@@ -329,30 +348,32 @@
   }
   .st-afk-card:hover img { filter: brightness(1.08); }
 
-  /* Side blur fade overlays — anchored to wrap, full section height */
-  .st-afk-fade {
+  /* Side blur overlays — on the section itself, full bleed width + height */
+  #st-afk-section::before,
+  #st-afk-section::after {
+    content: '';
     position: absolute;
     top: 0;
     bottom: 0;
     width: 22%;
     pointer-events: none;
-    z-index: 5;
+    z-index: 10;
   }
-  .st-afk-fade-l {
+  #st-afk-section::before {
     left: 0;
-    background: linear-gradient(to right, #d9d9d9 0%, rgba(217,217,217,0.75) 50%, transparent 100%);
-    -webkit-backdrop-filter: blur(4px);
+    background: linear-gradient(to right, #d9d9d9 0%, rgba(217,217,217,0.8) 40%, transparent 100%);
     backdrop-filter: blur(4px);
-    mask-image: linear-gradient(to right, black 30%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, black 30%, transparent 100%);
+    -webkit-backdrop-filter: blur(4px);
+    mask-image: linear-gradient(to right, black 20%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, black 20%, transparent 100%);
   }
-  .st-afk-fade-r {
+  #st-afk-section::after {
     right: 0;
-    background: linear-gradient(to left, #d9d9d9 0%, rgba(217,217,217,0.75) 50%, transparent 100%);
-    -webkit-backdrop-filter: blur(4px);
+    background: linear-gradient(to left, #d9d9d9 0%, rgba(217,217,217,0.8) 40%, transparent 100%);
     backdrop-filter: blur(4px);
-    mask-image: linear-gradient(to left, black 30%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to left, black 30%, transparent 100%);
+    -webkit-backdrop-filter: blur(4px);
+    mask-image: linear-gradient(to left, black 20%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to left, black 20%, transparent 100%);
   }
 
   .st-afk-arr {
