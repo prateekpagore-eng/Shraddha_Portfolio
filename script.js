@@ -306,16 +306,27 @@
       drum.appendChild(card);
     });
 
+    // Side blur overlays
+    var fadeL = document.createElement('div');
+    fadeL.className = 'st-afk-fade st-afk-fade-l';
+    var fadeR = document.createElement('div');
+    fadeR.className = 'st-afk-fade st-afk-fade-r';
+
     scene.appendChild(drum);
+    scene.appendChild(fadeL);
+    scene.appendChild(fadeR);
+
+    var chevronL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
+    var chevronR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
 
     var prev = document.createElement('button');
     prev.className = 'st-afk-arr st-afk-prev';
-    prev.innerHTML = '&#8592;';
+    prev.innerHTML = chevronL;
     prev.setAttribute('aria-label', 'Previous');
 
     var next = document.createElement('button');
     next.className = 'st-afk-arr st-afk-next';
-    next.innerHTML = '&#8594;';
+    next.innerHTML = chevronR;
     next.setAttribute('aria-label', 'Next');
 
     wrap.appendChild(prev);
