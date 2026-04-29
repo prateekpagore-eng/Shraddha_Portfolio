@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elevate Golf Website — Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #1a1a1a;
+      color: #e3e3e3;
+      font-family: 'Rubik', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .page-bg {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .blur-blob {
+      position: absolute;
+      width: 517px;
+      height: 273px;
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 50%;
+      filter: blur(175px);
+      top: 200px;
+      left: 170px;
+      transform: rotate(178deg);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1151px;
+      margin: 0 auto;
+      padding: 140px 48px 120px;
+    }
+
+    /* ---- Header ---- */
+    .header {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      margin-bottom: 100px;
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 837px;
+    }
+
+    .title-block h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 72px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+
+    .project-subtitle {
+      font-family: 'Rubik', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .meta-block {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .description {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: #e3e3e3;
+    }
+
+    .tags {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px 20px;
+    }
+
+    .tags span {
+      font-family: 'Rubik', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: #e3e3e3;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(227, 227, 227, 0.2);
+    }
+
+    /* ---- Content ---- */
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 100px;
+      margin-bottom: 100px;
+    }
+
+    .text-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.2;
+      margin-bottom: 30px;
+    }
+
+    .text-section p {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: #e3e3e3;
+      max-width: 945px;
+      white-space: pre-line;
+    }
+
+    /* ---- Images: fluid with aspect-ratio ---- */
+    .full-img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      height: auto;
+    }
+
+    .img-hero       { aspect-ratio: 1151 / 693; }
+    .img-approach   { aspect-ratio: 1151 / 774; }
+    .img-solution   { aspect-ratio: 1151 / 694; }
+    .img-hl1        { aspect-ratio: 1151 / 825; }
+    .img-hl2        { aspect-ratio: 1151 / 833; }
+
+    /* ---- Two-column image pairs ---- */
+    .two-cols {
+      display: flex;
+      gap: 36px;
+    }
+
+    .two-cols img {
+      flex: 1;
+      min-width: 0;
+      aspect-ratio: 555 / 600;
+      object-fit: cover;
+      border-radius: 11px;
+    }
+
+    .two-portrait {
+      display: flex;
+      gap: 50px;
+    }
+
+    .two-portrait img {
+      flex: 1;
+      min-width: 0;
+      aspect-ratio: 516 / 946;
+      object-fit: cover;
+      border-radius: 16px;
+    }
+
+    /* ---- Design showcase block ---- */
+    .showcase-block {
+      display: flex;
+      flex-direction: column;
+      gap: 100px;
+    }
+
+    /* ---- Shadow ---- */
+    .has-shadow {
+      box-shadow:
+        0px 18px 34px rgba(110, 110, 110, 0.10),
+        0px 70px 61px rgba(110, 110, 110, 0.09),
+        0px 158px 83px rgba(110, 110, 110, 0.05),
+        0px 282px 99px rgba(110, 110, 110, 0.01);
+    }
+
+    /* ---- Closing quote ---- */
+    .closing-quote {
+      font-family: 'Syne', sans-serif;
+      font-size: 48px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.25;
+    }
+
+    /* =============================================
+       RESPONSIVE — Tablet (≤ 900px)
+    ============================================= */
+    @media (max-width: 900px) {
+      .container {
+        padding: 80px 32px 80px;
+      }
+
+      .header {
+        margin-bottom: 72px;
+      }
+
+      .title-block h1 {
+        font-size: 52px;
+      }
+
+      .closing-quote {
+        font-size: 36px;
+      }
+
+      .content {
+        gap: 72px;
+        margin-bottom: 72px;
+      }
+
+      .showcase-block {
+        gap: 72px;
+      }
+    }
+
+    /* =============================================
+       RESPONSIVE — Mobile (≤ 600px)
+    ============================================= */
+    @media (max-width: 600px) {
+      .blur-blob {
+        width: 300px;
+        height: 160px;
+        top: 80px;
+        left: 0;
+        filter: blur(100px);
+      }
+
+      .container {
+        padding: 56px 20px 64px;
+      }
+
+      .header {
+        gap: 20px;
+        margin-bottom: 52px;
+      }
+
+      .title-block {
+        max-width: 100%;
+      }
+
+      .title-block h1 {
+        font-size: 36px;
+      }
+
+      .project-subtitle {
+        font-size: 14px;
+      }
+
+      .meta-block {
+        gap: 24px;
+      }
+
+      .description {
+        font-size: 14px;
+      }
+
+      .tags span {
+        font-size: 14px;
+      }
+
+      .content {
+        gap: 52px;
+        margin-bottom: 52px;
+      }
+
+      .text-section h2 {
+        font-size: 22px;
+        margin-bottom: 16px;
+      }
+
+      .text-section p {
+        font-size: 14px;
+      }
+
+      /* Stack two-column image pairs */
+      .two-cols {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .two-cols img {
+        width: 100%;
+        flex: none;
+        border-radius: 8px;
+      }
+
+      /* Stack portrait image pairs */
+      .two-portrait {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .two-portrait img {
+        width: 100%;
+        flex: none;
+        border-radius: 12px;
+      }
+
+      .showcase-block {
+        gap: 52px;
+      }
+
+      .closing-quote {
+        font-size: 26px;
+      }
+    }
+
+    /* =============================================
+       RESPONSIVE — Small Mobile (≤ 390px)
+    ============================================= */
+    @media (max-width: 390px) {
+      .title-block h1 {
+        font-size: 30px;
+      }
+
+      .closing-quote {
+        font-size: 22px;
+      }
+
+      .content {
+        gap: 40px;
+      }
+    }
+  </style>
+  <style id="st-nav-styles">
+    #st-header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 48px;
+      background: rgba(26, 26, 26, 0.72);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 1px 24px rgba(0, 0, 0, 0.3);
+      font-family: 'Rubik', sans-serif;
+    }
+    @media (min-width: 810px) { #st-header { padding: 16px 100px; } }
+    @media (max-width: 640px) { #st-header { padding: 14px 20px; } #st-nav { right: 16px !important; } }
+    .st-back {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 500; letter-spacing: -0.01em;
+      color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.15s;
+    }
+    .st-back:hover { color: #fff; }
+    .st-wordmark {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      font-size: 15px; font-weight: 600; letter-spacing: -0.03em;
+      color: rgba(255,255,255,0.85); pointer-events: none;
+    }
+    @media (max-width: 640px) { .st-wordmark { display: none; } }
+    #st-hamburger {
+      display: flex; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 6px; background: none; border: none; outline: none;
+    }
+    #st-hamburger span {
+      display: block; width: 22px; height: 2px; background: rgba(255,255,255,0.85);
+      border-radius: 2px; transition: all 0.3s ease;
+    }
+    #st-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    #st-hamburger.open span:nth-child(2) { opacity: 0; }
+    #st-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    #st-nav {
+      display: none; position: fixed; top: 58px; right: 48px; width: 200px;
+      background: rgba(30, 30, 30, 0.92);
+      backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.12); border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4); padding: 8px 0; z-index: 9998; overflow: hidden;
+    }
+    #st-nav.open { display: flex; flex-direction: column; }
+    #st-nav a {
+      font-family: 'Rubik', sans-serif; font-size: 14px; font-weight: 500;
+      color: rgba(255,255,255,0.8); text-decoration: none; padding: 12px 20px; transition: background 0.15s;
+    }
+    #st-nav a:hover { background: rgba(255,255,255,0.06); color: #fff; }
+    @media (min-width: 810px) { #st-nav { right: 100px; } }
+  </style>
+</head>
+<body>
+<header id="st-header">
+  <a class="st-back" href="index.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back
+  </a>
+  <span class="st-wordmark">Shraddha Thorat</span>
+  <button id="st-hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<nav id="st-nav">
+  <a href="index.html">Home</a>
+  <a href="index.html#work">Work</a>
+  <a href="index.html#process">Process</a>
+  <a href="index.html#about-1">About</a>
+</nav>
+  <div class="page-bg">
+    <div class="blur-blob"></div>
+
+    <div class="container">
+
+      <!-- ===== HEADER ===== -->
+      <div class="header">
+        <div class="title-block">
+          <h1>Elevate Golf Website</h1>
+          <p class="project-subtitle">Website Design &bull; Global Sports Platform</p>
+        </div>
+        <div class="meta-block">
+          <p class="description">Elevate Golf International is the world's first global Golf Tip marketplace connecting players with certified coaches for personalized, on-demand swing tips. The platform serves two distinct audiences: players who want affordable, flexible coaching, and coaches looking to grow their reach and income on their own terms. We designed the full marketing website in 2025, built to clearly communicate the platform's value to both audiences from the homepage hero to dedicated Player and Coach pages guiding every visitor to understand exactly what Elevate Golf is and why it matters.</p>
+          <div class="tags">
+            <span>2025</span>
+            <span>.</span>
+            <span>Brand Design</span>
+            <span>.</span>
+            <span>Responsive Web</span>
+          </div>
+          <hr class="divider">
+        </div>
+      </div>
+
+      <!-- ===== CONTENT ===== -->
+      <div class="content">
+
+        <!-- Hero image -->
+        <img
+          src="images/image-import-7.png"
+          class="full-img img-hero"
+          alt="Elevate Golf website hero screenshot">
+
+        <!-- THE CHALLENGE -->
+        <div class="text-section">
+          <h2>The Challenge</h2>
+          <p>Elevate Golf entered the market with no existing digital presence, requiring a website designed and built entirely from the ground up. The project demanded clear thinking, strong communication, and the ability to juggle multiple moving parts at once.
+
+Dual user groups: The website needed to speak equally well to two very different audiences players seeking affordable coaching, and coaches looking to grow a flexible business within one cohesive experience.
+High volume of content: From IQ Match™ and bento grids to step-by-step journeys and earning calculators, the platform had a lot to say. Structuring it clearly without overwhelming the visitor was a constant challenge.</p>
+        </div>
+
+        <div class="two-cols">
+          <img src="images/image-import-7.jpg" alt="Challenge visual 1">
+          <img src="images/image-import-8.jpg" alt="Challenge visual 2">
+        </div>
+
+        <!-- THE APPROACH -->
+        <div class="text-section">
+          <h2>The Approach</h2>
+          <p>Research-first. The process kicked off by studying golf platform design patterns and client-provided references to establish the right visual direction.
+
+Two audiences, two pages: Players and coaches each got a dedicated page elevategolf.com/player and /coach designed to speak directly to their unique goals, motivations and pain points.
+IA defined early, refined often: The site structure was confirmed upfront, with section placements fine-tuned through every client call.
+Iterative by nature: Regular reviews, continuous refinement, and close collaboration kept the design moving forward until every page was launch-ready.</p>
+        </div>
+
+        <img
+          src="images/image-import-63.png"
+          class="full-img img-approach"
+          alt="Approach screenshot">
+
+        <!-- THE SOLUTION -->
+        <div class="text-section">
+          <h2>The Solution</h2>
+          <p>The final website strikes the right balance — visually strong, on-brand, and immediately recognisable as a golf platform. The green and purple colour system came together cohesively, with each colour playing an intentional role across UI elements and components.
+
+Consistent &amp; thoughtful components: A unified design language was maintained across every page from the homepage feature cards and coach carousels to the bento grids and step-by-step journey sections with each element purposefully chosen and placed.
+Speaks to both audiences: The final experience successfully guides both players and coaches to what matters most to them, fulfilling the platform's core purpose from day one.</p>
+        </div>
+
+        <img
+          src="images/image-import-4.png"
+          class="full-img img-solution"
+          alt="Solution screenshot">
+
+        <!-- DESIGN HIGHLIGHTS -->
+        <div class="text-section">
+          <h2>Design Highlights</h2>
+          <p>The website needed to communicate a lot without overwhelming. Every major design decision was made with clarity and visual impact in mind.
+
+Bento Grid on Coach page: A rich mix of image cards, stat blocks, and bold typography laid out in a bento-style grid, making the earning model instantly scannable and visually compelling.
+The Dual Split: Get a Tip / Give a Tip A single section that cleanly divides the platform into two worlds. Players and coaches each see their own visual identity, messaging and CTA communicating the dual audience concept in one powerful moment.
+Step-by-step Journey flows: Both the Player and Coach pages feature their own dedicated journey sections, breaking down a complex process into a simple, visual, easy-to-follow flow.</p>
+        </div>
+
+        <!-- Design showcase: full screenshot + mobile showcase -->
+        <div class="showcase-block">
+          <img
+            src="images/image-import-56.png"
+            class="full-img img-hl1 has-shadow"
+            alt="Design highlights screenshot">
+
+          <img
+            src="images/Group 1000004838.png"
+            class="full-img img-hl2 has-shadow"
+            alt="Design highlights mobile showcase">
+        </div>
+
+        <!-- THE OUTCOME -->
+        <div class="text-section">
+          <h2>The Outcome</h2>
+          <p>After months of research, iteration, and close collaboration, Elevate Golf went live and the response said it all. The platform launched successfully, resonating with both players and coaches exactly as intended.
+
+The moment that made it all worth it? The Elevate Golf ad lighting up a Times Square London screen. From a blank canvas to a globally visible brand it was a proud milestone for the team and a testament to the work put in. The client was thrilled, the team was celebrated, and the website stood as proof that great design, even through a challenging process, always finds its way to a great result. Working on Elevate Golf was a journey challenging, rewarding, and ultimately something the entire team is proud of. Watching it go from a blank canvas to a globally visible brand was a moment none of us will forget.</p>
+        </div>
+
+        <div class="two-portrait">
+          <img src="images/image-import-5.jpg" alt="Outcome image 1">
+          <img src="images/image-import-12.jpg" alt="Outcome image 2">
+        </div>
+
+      </div>
+
+      <!-- ===== CLOSING QUOTE ===== -->
+      <p class="closing-quote">Working on Elevate Golf was a journey challenging, rewarding, and ultimately something I am proud of.</p>
+
+    </div>
+  </div>
+<script>
+(function() {
+  var btn = document.getElementById('st-hamburger');
+  var nav = document.getElementById('st-nav');
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    btn.classList.toggle('open');
+    nav.classList.toggle('open');
+  });
+  document.addEventListener('click', function(e) {
+    if (!nav.contains(e.target) && e.target !== btn) {
+      btn.classList.remove('open');
+      nav.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

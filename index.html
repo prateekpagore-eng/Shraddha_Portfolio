@@ -676,6 +676,19 @@
   ══════════════════════════════════════════════ */
   .framer-n0isp { display: none !important; }
 
+  /* ── AFK section: allow entrance animations to overflow container ── */
+  .framer-lo5toe { overflow: visible !important; }
+
+  /* ── Coming soon card badge ── */
+  .st-coming-soon {
+    position: absolute; top: 12px; left: 12px;
+    background: rgba(0,0,0,0.72); color: #fff;
+    font-family: 'Geist', 'Geist Placeholder', sans-serif;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 20px; pointer-events: none; z-index: 10;
+  }
+  .st-coming-soon-card { cursor: default !important; }
+
 </style>
 
 <header id="st-header">
@@ -730,24 +743,26 @@
   // ── Change 5: Override case study links to bypass Framer SPA router ──
   // ── Change 2: Inject custom footer ──
   function patchCaseStudyCards() {
-    // Change 3: rename bravo title
+    // Change 3: rename card titles
     var allLinks = document.querySelectorAll('a[href]');
     allLinks.forEach(function(a) {
       var href = a.getAttribute('href') || '';
-      if (href.indexOf('bravo') !== -1) {
-        // Rename title text
+      var renameFrom = null, renameTo = null;
+      if (href.indexOf('bravo') !== -1) { renameFrom = 'Bravo'; renameTo = 'Kyoho Website Design'; }
+      else if (href.indexOf('nitro') !== -1) { renameFrom = null; renameTo = 'Nuvama FinSmart'; }
+      else if (href.indexOf('fargo') !== -1) { renameFrom = null; renameTo = 'Coming Soon'; }
+      if (renameTo) {
         var titleEls = a.querySelectorAll('[class*="framer-"]');
         titleEls.forEach(function(el) {
-          if (el.childElementCount === 0 && el.textContent.trim() === 'Bravo') {
-            el.textContent = 'Kyoho Website Design';
+          if (el.childElementCount === 0 && (!renameFrom || el.textContent.trim() === renameFrom)) {
+            if (!renameFrom || el.textContent.trim() === renameFrom) el.textContent = renameTo;
           }
         });
-        // Also try direct text nodes deeper
-        var walker = document.createTreeWalker(a, NodeFilter.SHOW_TEXT);
-        var node;
-        while ((node = walker.nextNode())) {
-          if (node.textContent.trim() === 'Bravo') {
-            node.textContent = 'Kyoho Website Design';
+        if (renameFrom) {
+          var walker = document.createTreeWalker(a, NodeFilter.SHOW_TEXT);
+          var node;
+          while ((node = walker.nextNode())) {
+            if (node.textContent.trim() === renameFrom) node.textContent = renameTo;
           }
         }
       }
@@ -783,6 +798,27 @@
           img2.style.width = '100%';
           img2.style.height = '100%';
         }
+      } else if (href.indexOf('nitro') !== -1) {
+        thumbContainer.classList.add('st-has-thumb');
+        var img3 = thumbContainer.querySelector('img');
+        if (img3) {
+          img3.src = 'images/image-import-53.png';
+          img3.srcset = 'images/image-import-53.png';
+          img3.alt = 'Nuvama FinSmart';
+          img3.style.opacity = '1';
+          img3.style.objectFit = 'cover';
+          img3.style.width = '100%';
+          img3.style.height = '100%';
+        }
+      } else if (href.indexOf('fargo') !== -1) {
+        card.classList.add('st-coming-soon-card');
+        if (!card.querySelector('.st-coming-soon')) {
+          var badge = document.createElement('div');
+          badge.className = 'st-coming-soon';
+          badge.textContent = 'Coming soon';
+          card.style.position = 'relative';
+          card.appendChild(badge);
+        }
       }
     });
 
@@ -791,9 +827,9 @@
     workLinks.forEach(function(a) {
       var href = a.getAttribute('href') || '';
       var dest;
-      if (href.indexOf('strida') !== -1) dest = 'case-studies/elevate-golf.html';
-      else if (href.indexOf('bravo') !== -1) dest = 'case-studies/kyoho-website-design.html';
-      else if (href.indexOf('nitro') !== -1 || href.indexOf('fargo') !== -1) dest = '#work';
+      if (href.indexOf('strida') !== -1) dest = 'elevate.html';
+      else if (href.indexOf('bravo') !== -1) dest = 'kyoho.html';
+      else if (href.indexOf('nitro') !== -1) dest = 'nuvama.html';
       if (dest) {
         a.setAttribute('href', dest);
         a.removeEventListener('click', a.__stHandler);
@@ -808,6 +844,10 @@
           }
         };
         a.addEventListener('click', a.__stHandler);
+      } else if (href.indexOf('fargo') !== -1) {
+        a.removeEventListener('click', a.__stHandler);
+        a.__stHandler = function(e) { e.preventDefault(); e.stopPropagation(); };
+        a.addEventListener('click', a.__stHandler);
       }
     });
   }
@@ -817,7 +857,7 @@
   setTimeout(patchCaseStudyCards, 3000);
 
 
-  // MutationObserver to keep patches alive after hydration
+  // MutationObserver scoped to #work only — avoids firing on every scroll animation across #main
   var patchDebounce;
   var patchObserver = new MutationObserver(function() {
     clearTimeout(patchDebounce);
@@ -825,10 +865,13 @@
       patchCaseStudyCards();
     }, 120);
   });
+  // Disconnect after 12s — Framer hydration is always done by then; no need to keep observing
   var bodyPollTimer = setInterval(function() {
-    if (document.body) {
+    var workEl = document.getElementById('work');
+    if (workEl) {
       clearInterval(bodyPollTimer);
-      patchObserver.observe(document.getElementById('main') || document.body, { childList: true, subtree: true });
+      patchObserver.observe(workEl, { childList: true, subtree: true });
+      setTimeout(function() { patchObserver.disconnect(); }, 12000);
     }
   }, 200);
 
@@ -906,6 +949,26 @@
   setTimeout(fixAboutImage, 400);
   setTimeout(fixAboutImage, 1500);
   setTimeout(fixAboutImage, 3500);
+
+  // ── Animation fallback: if Framer entrance animations don't fire, force elements visible ──
+  // Targets hero, intro (2nd section), process cards, and AFK section.
+  // Only acts on elements still at opacity:0 after 2.5s — won't disturb already-animated content.
+  setTimeout(function() {
+    function forceVisible(root) {
+      if (!root) return;
+      root.querySelectorAll('[style*="opacity: 0"], [style*="opacity:0"]').forEach(function(el) {
+        el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+        el.style.visibility = 'visible';
+      });
+    }
+    forceVisible(document.getElementById('hero'));
+    forceVisible(document.querySelector('.framer-ts46om'));
+    forceVisible(document.getElementById('process'));
+    forceVisible(document.getElementById('process-cards'));
+    forceVisible(document.querySelector('.framer-lo5toe'));
+  }, 2500);
 
 })();
 </script>
