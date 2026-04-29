@@ -227,8 +227,12 @@
   /* ══════════════════════════════════════════════
      AFK DETOUR — 3D carousel
   ══════════════════════════════════════════════ */
+  /* Break the AFK container out of Framer's section padding to full viewport width */
   .framer-191bz3v-container {
-    width: 100% !important;
+    width: 100vw !important;
+    position: relative !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
     height: auto !important;
     overflow: visible !important;
   }
@@ -236,9 +240,8 @@
   .st-afk-wrap {
     position: relative;
     width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
     padding: 20px 0 40px;
+    overflow: hidden;
   }
 
   .st-afk-scene {
