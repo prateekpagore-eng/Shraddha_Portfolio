@@ -1,0 +1,225 @@
+  /* ── Hide original Framer nav ── */
+  .framer-1lcmve6 { display: none !important; }
+  /* ── Hide second fold tickers ── */
+  .framer-cyj4wy  { display: none !important; }
+
+  /* ══════════════════════════════════════════════
+     HEADER — Glassmorphism
+  ══════════════════════════════════════════════ */
+  #st-header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 40px;                       /* mobile default */
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 1px 24px rgba(0, 0, 0, 0.06);
+    font-family: 'Geist', 'Geist Placeholder', sans-serif;
+  }
+  /* Desktop: 2.5× horizontal padding (40→100px) */
+  @media (min-width: 810px) {
+    #st-header { padding: 16px 100px; }
+  }
+  .st-name {
+    font-size: 15px; font-weight: 600; letter-spacing: -0.04em;
+    color: #000; text-decoration: none;
+  }
+  #st-hamburger {
+    display: flex; flex-direction: column; gap: 5px;
+    cursor: pointer; padding: 6px; background: none; border: none; outline: none;
+  }
+  #st-hamburger span {
+    display: block; width: 22px; height: 2px; background: #000;
+    border-radius: 2px; transition: all 0.3s ease;
+  }
+  #st-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  #st-hamburger.open span:nth-child(2) { opacity: 0; }
+  #st-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ══════════════════════════════════════════════
+     NAV DROPDOWN — right-side panel
+  ══════════════════════════════════════════════ */
+  #st-nav {
+    display: none;
+    position: fixed; top: 58px; right: 40px;
+    width: 200px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    padding: 8px 0; z-index: 9998; overflow: hidden;
+  }
+  #st-nav.open { display: flex; flex-direction: column; }
+  #st-nav a {
+    font-family: 'Geist', 'Geist Placeholder', sans-serif;
+    font-size: 14px; font-weight: 500; letter-spacing: -0.03em;
+    color: #000; text-decoration: none;
+    padding: 12px 20px; transition: background 0.15s;
+  }
+  #st-nav a:hover { background: rgba(0,0,0,0.04); }
+  @media (max-width: 640px) {
+    #st-header { padding: 14px 20px; }
+    #st-nav { right: 16px; }
+  }
+
+  /* ══════════════════════════════════════════════
+     SECOND FOLD — reduce top/bottom padding 0.7×
+     framer-ts46om is the intro section container
+  ══════════════════════════════════════════════ */
+  /* Desktop: 80px → 56px */
+  .framer-ts46om { padding-top: 56px !important; padding-bottom: 56px !important; }
+  /* Tablet ~810px: 56px → 39px */
+  @media (min-width: 810px) and (max-width: 1439.98px) {
+    .framer-ts46om { padding-top: 39px !important; padding-bottom: 39px !important; }
+  }
+  /* Mobile: 40px → 28px */
+  @media (max-width: 809.98px) {
+    .framer-ts46om { padding-top: 28px !important; padding-bottom: 28px !important; }
+  }
+
+  /* ══════════════════════════════════════════════
+     PROCESS CARDS — mobile height fix
+  ══════════════════════════════════════════════ */
+  @media (max-width: 809.98px) {
+    /* Cards wrapper */
+    .framer-1mpb03n {
+      overflow: visible !important;
+      height: auto !important;
+    }
+    /* Each card item */
+    .framer-12koumt {
+      height: auto !important;
+      overflow: visible !important;
+      flex-shrink: 0 !important;
+    }
+    /* Card inner containers */
+    .framer-hFxSj, .framer-B4GU3 {
+      height: auto !important;
+      overflow: visible !important;
+    }
+    /* Process section outer */
+    #process-cards {
+      height: auto !important;
+      overflow: visible !important;
+    }
+  }
+
+  /* ══════════════════════════════════════════════
+     AFK DETOUR — mobile eyebrow + card centering
+  ══════════════════════════════════════════════ */
+  @media (max-width: 809.98px) {
+    /* Eyebrow tag visibility */
+    .framer-1evcvgy, .framer-sgtebz {
+      display: flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+    /* Center the AFK cards */
+    .framer-191bz3v-container {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      width: 100% !important;
+    }
+    /* Heading content centering */
+    .framer-eiw4av { align-items: center !important; text-align: center !important; }
+  }
+
+  /* ══════════════════════════════════════════════
+     FOOTER — mobile visibility fix
+  ══════════════════════════════════════════════ */
+  @media (max-width: 809.98px) {
+    .framer-n0isp {
+      overflow: visible !important;
+      height: auto !important;
+      padding-bottom: 24px !important;
+    }
+    /* Custom footer also */
+    [data-framer-name="Footer"] {
+      overflow: visible !important;
+      height: auto !important;
+      padding: 24px 20px !important;
+    }
+    .framer-h1fn19, .framer-1lix8my {
+      overflow: visible !important;
+      height: auto !important;
+    }
+  }
+
+  /* ── Case study card thumbnails — hidden by default ── */
+  .framer-nygabs img { opacity: 0 !important; }
+  .framer-nygabs {
+    background: linear-gradient(135deg, #f0ede8 0%, #e5e0d8 100%) !important;
+    position: relative !important;
+  }
+  /* First two cards: show thumbnail image */
+  .framer-nygabs.st-has-thumb { background: none !important; }
+  .framer-nygabs.st-has-thumb img { opacity: 1 !important; object-fit: cover !important; width: 100% !important; height: 100% !important; }
+
+  /* ── Push page content below fixed header ── */
+  #main { padding-top: 62px !important; }
+
+  /* ══════════════════════════════════════════════
+     SECTION BACKGROUNDS — force #d9d9d9 everywhere
+  ══════════════════════════════════════════════ */
+  /* Neutralize any #fff section-level backgrounds (not small UI elements) */
+  .framer-rfr8c4 { background-color: #d9d9d9 !important; }
+  /* Work section, intro section, process section outer wrappers */
+  #intro > *, #work > *, #process > *, #process-cards > *, #about-1 > *, #experience > * {
+    /* intentionally not overriding — let Framer token handle #d9d9d9 body */
+  }
+
+    /* ══════════════════════════════
+     SECTIONS 3–6 — match Section 2 background (#d9d9d9)
+  ══════════════════════════════ */
+  /* Layer 1: section root containers */
+  #work,
+  .framer-lo5toe,
+  #process,
+  #process-cards,
+  #about-1 {
+    background-color: #d9d9d9 !important;
+  }
+  /* Layer 2: direct div children (section-level wrappers) */
+  #work > div,
+  .framer-lo5toe > div,
+  #process > div,
+  #about-1 > div {
+    background-color: #d9d9d9 !important;
+  }
+  /* Layer 3: known dark AFK inner elements */
+  .framer-lo5toe .framer-1a56uwu,
+  .framer-lo5toe .framer-nlltkq,
+  .framer-lo5toe .framer-1klq51g {
+    background-color: #d9d9d9 !important;
+    background-image: none !important;
+    box-shadow: none !important;
+  }
+
+  /* ══════════════════════════════════════════════
+     HERO — reduce top padding 20%
+  ══════════════════════════════════════════════ */
+  /* The hero section wrapper has scroll-margin-top:80px and padding:0 120px.
+     Reduce the hero's top scroll-margin and add a negative offset inside. */
+  #hero { margin-top: -32px !important; }
+
+  /* ══════════════════════════════════════════════
+     FOOTER — hide original Framer footer
+  ══════════════════════════════════════════════ */
+  .framer-n0isp { display: none !important; }
+
+  /* ── AFK section: allow entrance animations to overflow container ── */
+  .framer-lo5toe { overflow: visible !important; }
+
+  /* ── Coming soon card badge ── */
+  .st-coming-soon {
+    position: absolute; top: 12px; left: 12px;
+    background: rgba(0,0,0,0.72); color: #fff;
+    font-family: 'Geist', 'Geist Placeholder', sans-serif;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 20px; pointer-events: none; z-index: 10;
+  }
+  .st-coming-soon-card { cursor: default !important; }
