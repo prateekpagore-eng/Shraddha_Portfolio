@@ -428,6 +428,17 @@
     initAFKCarousel();
   }
 
+  // Move #st-afk-section before #about-1 after Framer hydrates
+  function positionAFKSection() {
+    var section = document.getElementById('st-afk-section');
+    var about1  = document.getElementById('about-1');
+    if (section && about1 && about1.parentNode) {
+      about1.parentNode.insertBefore(section, about1);
+    }
+  }
+  setTimeout(positionAFKSection, 800);
+  setTimeout(positionAFKSection, 2000);
+
   // ── Animation fallback: if Framer entrance animations don't fire, force elements visible ──
   // Targets hero, intro (2nd section), process cards, and AFK section.
   // Only acts on elements still at opacity:0 after 2.5s — won't disturb already-animated content.
@@ -445,7 +456,6 @@
     forceVisible(document.querySelector('.framer-ts46om'));
     forceVisible(document.getElementById('process'));
     forceVisible(document.getElementById('process-cards'));
-    forceVisible(document.querySelector('.framer-lo5toe'));
   }, 2500);
 
 })();

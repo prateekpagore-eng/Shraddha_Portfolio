@@ -395,4 +395,11 @@
   @media (max-width: 809.98px) {
     .st-afk-scene { height: 320px; perspective: 1400px; }
     .st-afk-card { width: 200px; height: 260px; margin-left: -100px; margin-top: -130px; }
+    /* Reduce inner padding on mobile */
+    .st-afk-inner { padding: 0 20px; }
+    #st-afk-section { padding: 60px 0 80px; }
+    .st-afk-heading { font-size: 36px; }
+    /* Move buttons to screen edges on mobile */
+    .st-afk-prev { left: 12px; }
+    .st-afk-next { right: 12px; }
   }
