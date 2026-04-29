@@ -428,16 +428,36 @@
     initAFKCarousel();
   }
 
-  // Move #st-afk-section before #about-1 after Framer hydrates
-  function positionAFKSection() {
-    var section = document.getElementById('st-afk-section');
-    var about1  = document.getElementById('about-1');
-    if (section && about1 && about1.parentNode) {
-      about1.parentNode.insertBefore(section, about1);
-    }
+  // Move #about-1 and #experience OUT of #main to appear after #st-afk-section.
+  // We move Framer sections out (not into) React's tree — React won't recreate them
+  // after hydration is complete since the static site has no state changes post-load.
+  function liftFramerSectionsAfterAFK() {
+    var afk      = document.getElementById('st-afk-section');
+    var about1   = document.getElementById('about-1');
+    var exp      = document.getElementById('experience');
+    if (!afk || !about1 || !exp) return;
+    // Already lifted if about-1's parent is body
+    if (about1.parentNode === document.body) return;
+    var anchor = afk.nextSibling; // insert before whatever follows the AFK section
+    document.body.insertBefore(about1, anchor);
+    document.body.insertBefore(exp, anchor);
   }
-  setTimeout(positionAFKSection, 800);
-  setTimeout(positionAFKSection, 2000);
+  // Run after Framer hydration is complete — watch #main for DOM settling
+  var _afkLiftTimer = null;
+  var _afkLiftObserver = new MutationObserver(function() {
+    clearTimeout(_afkLiftTimer);
+    _afkLiftTimer = setTimeout(function() {
+      _afkLiftObserver.disconnect();
+      liftFramerSectionsAfterAFK();
+    }, 1200); // wait 1.2s after last mutation = hydration done
+  });
+  var _mainEl = document.getElementById('main');
+  if (_mainEl) _afkLiftObserver.observe(_mainEl, { childList: true, subtree: false });
+  // Hard fallback at 6s in case MutationObserver never fires
+  setTimeout(function() {
+    _afkLiftObserver.disconnect();
+    liftFramerSectionsAfterAFK();
+  }, 6000);
 
   // ── Animation fallback: if Framer entrance animations don't fire, force elements visible ──
   // Targets hero, intro (2nd section), process cards, and AFK section.
