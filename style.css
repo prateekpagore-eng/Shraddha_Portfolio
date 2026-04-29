@@ -242,7 +242,7 @@
   }
 
   .st-afk-scene {
-    perspective: 1200px;
+    perspective: 2000px;
     height: 400px;
     position: relative;
     overflow: visible;
@@ -307,6 +307,6 @@
   .st-afk-next { right: 0; }
 
   @media (max-width: 809.98px) {
-    .st-afk-scene { height: 320px; perspective: 900px; }
+    .st-afk-scene { height: 320px; perspective: 1400px; }
     .st-afk-card { width: 200px; height: 260px; margin-left: -100px; margin-top: -130px; }
   }

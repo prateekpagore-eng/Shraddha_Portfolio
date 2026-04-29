@@ -327,12 +327,20 @@
     var cards = drum.querySelectorAll('.st-afk-card');
     var N = cards.length;
     var THETA = 360 / N;
-    var RADIUS = window.innerWidth <= 809 ? 220 : 320;
     var SPEED = 0.2;
     var angle = 0, paused = false, snapping = false, snapTarget = 0;
+    var RADIUS = 320;
+
+    // Radius so adjacent cards never overlap: r = (cardWidth/2) / sin(π/N) + gap
+    function calcRadius() {
+      var isMobile = window.innerWidth <= 809;
+      var cardW = isMobile ? 200 : 260;
+      var minR = (cardW / 2) / Math.sin(Math.PI / N);
+      return Math.max(isMobile ? 220 : 320, Math.ceil(minR) + 30);
+    }
 
     function layoutCards() {
-      RADIUS = window.innerWidth <= 809 ? 220 : 320;
+      RADIUS = calcRadius();
       for (var i = 0; i < N; i++) {
         cards[i].style.transform = 'rotateY(' + (THETA * i) + 'deg) translateZ(' + RADIUS + 'px)';
       }
