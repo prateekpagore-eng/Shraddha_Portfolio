@@ -403,3 +403,126 @@
     .st-afk-prev { left: 12px; }
     .st-afk-next { right: 12px; }
   }
+
+  /* ══════════════════════════════════════════════
+     ABOUT SECTION — Static replica
+  ══════════════════════════════════════════════ */
+  /* Hide Framer original */
+  .framer-rfr8c4[data-framer-name="about"] { display: none !important; }
+
+  #st-about-section {
+    background-color: #d9d9d9;
+    width: 100%;
+    padding: 80px 0 100px;
+    position: relative;
+  }
+
+  .st-about-inner {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+  }
+
+  .st-about-eyebrow-row {
+    display: flex; align-items: center; gap: 24px;
+    width: 100%; justify-content: center;
+  }
+  .st-about-line { flex: 0 0 69px; height: 1px; opacity: 0.5; }
+  .st-about-line-l { background: linear-gradient(90deg, rgba(84,84,84,0) 0%, rgba(0,0,0,0.5) 100%); }
+  .st-about-line-r { background: linear-gradient(270deg, rgba(84,84,84,0) 0%, rgba(0,0,0,0.5) 100%); }
+  .st-about-eyebrow {
+    font-family: 'Instrument Serif', serif;
+    font-size: 24px; font-style: italic; font-weight: 400;
+    color: #000; white-space: nowrap;
+  }
+
+  .st-about-heading {
+    font-family: 'Inter Display', 'Inter', sans-serif;
+    font-size: 56px; font-weight: 500;
+    letter-spacing: -0.03em; line-height: 1.1;
+    color: #000; margin: 0; text-align: center;
+  }
+  .st-about-heading-muted { color: rgba(0,0,0,0.5); }
+
+  .st-about-content {
+    display: flex; gap: 60px;
+    align-items: flex-start; width: 100%;
+  }
+
+  /* Left — photo + caption */
+  .st-about-left { flex: 0 0 320px; display: flex; flex-direction: column; gap: 14px; }
+
+  .st-about-photo-wrap {
+    width: 100%; aspect-ratio: 3/4;
+    border-radius: 20px; overflow: hidden;
+  }
+  .st-about-photo {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center top; display: block;
+  }
+
+  .st-about-caption { display: flex; flex-direction: column; gap: 6px; }
+  .st-about-name {
+    font-family: 'Geist', 'Geist Placeholder', sans-serif;
+    font-size: 15px; font-weight: 600; color: #000;
+    margin: 0; text-align: right;
+  }
+  .st-about-caption-bottom {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  }
+  .st-about-socials { display: flex; gap: 10px; align-items: center; }
+  .st-social-link {
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(0,0,0,0.45); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .st-social-link:hover { color: #000; }
+  .st-about-role {
+    font-family: 'Geist', 'Geist Placeholder', sans-serif;
+    font-size: 13px; color: rgba(0,0,0,0.5); margin: 0; text-align: right;
+  }
+
+  /* Right — bio + work history */
+  .st-about-right {
+    flex: 1; display: flex; flex-direction: column; gap: 40px; padding-top: 4px;
+  }
+  .st-about-bio {
+    font-family: 'Geist', 'Geist Placeholder', sans-serif;
+    font-size: 16px; line-height: 1.75; color: #000; margin: 0;
+  }
+
+  .st-about-work { display: flex; flex-direction: column; border-top: 1px solid rgba(0,0,0,0.1); }
+  .st-work-row {
+    display: grid; grid-template-columns: 1.2fr 1.6fr 1fr;
+    padding: 16px 0; border-bottom: 1px solid rgba(0,0,0,0.1); gap: 12px;
+    align-items: center;
+  }
+  .st-work-role {
+    font-family: 'Geist', 'Geist Placeholder', sans-serif;
+    font-size: 14px; font-weight: 500; color: #000;
+  }
+  .st-work-company {
+    font-family: 'Geist', 'Geist Placeholder', sans-serif;
+    font-size: 14px; color: rgba(0,0,0,0.5);
+  }
+  .st-work-date {
+    font-family: 'Geist', 'Geist Placeholder', sans-serif;
+    font-size: 14px; color: #000; text-align: right;
+  }
+
+  @media (max-width: 809.98px) {
+    #st-about-section { padding: 60px 0 80px; }
+    .st-about-inner { padding: 0 20px; gap: 32px; }
+    .st-about-heading { font-size: 36px; }
+    .st-about-content { flex-direction: column; gap: 32px; }
+    .st-about-left { flex: none; width: 100%; }
+    .st-about-photo-wrap { aspect-ratio: 4/3; }
+    .st-work-row { grid-template-columns: 1fr 1fr; row-gap: 4px; }
+    .st-work-company { grid-column: 1 / -1; font-size: 12px; }
+    .st-work-date { text-align: right; }
+  }

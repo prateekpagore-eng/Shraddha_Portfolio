@@ -273,6 +273,25 @@
   setTimeout(fixAboutImage, 1500);
   setTimeout(fixAboutImage, 3500);
 
+  // Redirect #about-1 and #experience nav anchors to our static section
+  // by removing those IDs from the now-hidden Framer elements after hydration
+  function fixAboutAnchors() {
+    var framerAbout = document.querySelector('.framer-rfr8c4[data-framer-name="about"]');
+    if (framerAbout && framerAbout.id === 'about-1') {
+      framerAbout.removeAttribute('id');
+      var staticAbout = document.getElementById('st-about-section');
+      if (staticAbout) staticAbout.id = 'about-1';
+    }
+    var framerExp = document.querySelector('[data-framer-name="Experience List Content"]');
+    if (framerExp && framerExp.id === 'experience') {
+      framerExp.removeAttribute('id');
+      var staticExp = document.getElementById('experience-anchor');
+      if (staticExp) staticExp.id = 'experience';
+    }
+  }
+  setTimeout(fixAboutAnchors, 1500);
+  setTimeout(fixAboutAnchors, 3500);
+
   // ── AFK Detour — 3D carousel ──
   function buildAFKCarousel(images) {
     var container = document.getElementById('st-afk-carousel-root');
