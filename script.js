@@ -306,15 +306,13 @@
       drum.appendChild(card);
     });
 
-    // Side blur overlays
+    // Side blur overlays — on wrap so they span full section height
     var fadeL = document.createElement('div');
     fadeL.className = 'st-afk-fade st-afk-fade-l';
     var fadeR = document.createElement('div');
     fadeR.className = 'st-afk-fade st-afk-fade-r';
 
     scene.appendChild(drum);
-    scene.appendChild(fadeL);
-    scene.appendChild(fadeR);
 
     var chevronL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
     var chevronR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
@@ -329,6 +327,8 @@
     next.innerHTML = chevronR;
     next.setAttribute('aria-label', 'Next');
 
+    wrap.appendChild(fadeL);
+    wrap.appendChild(fadeR);
     wrap.appendChild(prev);
     wrap.appendChild(scene);
     wrap.appendChild(next);
