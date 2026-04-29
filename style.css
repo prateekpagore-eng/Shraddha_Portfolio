@@ -276,7 +276,7 @@
   }
 
   .st-afk-eyebrow {
-    font-family: 'Instrument Sans', sans-serif;
+    font-family: 'Instrument Serif', serif;
     font-size: 24px;
     font-style: italic;
     font-weight: 400;
@@ -298,6 +298,7 @@
   #st-afk-carousel-root {
     width: 100%;
     position: relative;
+    margin-top: 48px;
   }
 
   .st-afk-wrap {
@@ -355,7 +356,7 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 22%;
+    width: 25%;
     pointer-events: none;
     z-index: 10;
   }
@@ -398,8 +399,8 @@
   }
   .st-afk-arr svg { width: 20px; height: 20px; display: block; }
   .st-afk-arr:hover { background: rgba(0, 0, 0, 0.75); border-color: rgba(255,255,255,0.45); }
-  .st-afk-prev { left: 0; }
-  .st-afk-next { right: 0; }
+  .st-afk-prev { left: 60px; }
+  .st-afk-next { right: 60px; }
 
   @media (max-width: 809.98px) {
     .st-afk-scene { height: 320px; perspective: 1400px; }
