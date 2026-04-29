@@ -150,6 +150,36 @@
   setTimeout(patchCaseStudyCards, 1200);
   setTimeout(patchCaseStudyCards, 3000);
 
+  // ── Patch work card pills to match real case study tags ──
+  var CARD_PILLS = {
+    strida: ['Brand Design', 'Responsive Web', '2025'],
+    bravo:  ['SaaS', 'B2B & B2C', 'Marketplace'],
+    nitro:  ['Fintech', 'Product Design', 'Tablet'],
+    fargo:  ['Coming Soon']
+  };
+
+  function patchWorkCardPills() {
+    document.querySelectorAll('a[href]').forEach(function(card) {
+      var href = card.getAttribute('href') || '';
+      var slug = null;
+      if (href.indexOf('strida') !== -1) slug = 'strida';
+      else if (href.indexOf('bravo') !== -1) slug = 'bravo';
+      else if (href.indexOf('nitro') !== -1) slug = 'nitro';
+      else if (href.indexOf('fargo') !== -1) slug = 'fargo';
+      if (!slug) return;
+
+      var pills = CARD_PILLS[slug];
+      var pillEls = card.querySelectorAll('[data-framer-name="Tags"] h4 em.framer-text');
+      pillEls.forEach(function(em, i) {
+        if (pills[i] !== undefined) em.textContent = pills[i];
+      });
+    });
+  }
+
+  setTimeout(patchWorkCardPills, 400);
+  setTimeout(patchWorkCardPills, 1400);
+  setTimeout(patchWorkCardPills, 3200);
+
   // MutationObserver scoped to #work only — avoids firing on every scroll animation across #main
   var patchDebounce;
   var patchObserver = new MutationObserver(function() {
@@ -242,6 +272,56 @@
   setTimeout(fixAboutImage, 400);
   setTimeout(fixAboutImage, 1500);
   setTimeout(fixAboutImage, 3500);
+
+  // ── AFK Detour gallery — load images from afk-manifest.json ──
+  function buildAFKGallery(images) {
+    var container = document.querySelector('.framer-191bz3v-container');
+    if (!container) return;
+    if (container.querySelector('.st-afk-gallery')) return;
+
+    // Hide Framer's built-in carousel
+    var inner = container.firstElementChild;
+    if (inner) inner.style.display = 'none';
+
+    if (!images || images.length === 0) return;
+
+    var gallery = document.createElement('div');
+    gallery.className = 'st-afk-gallery';
+
+    images.forEach(function(src) {
+      var item = document.createElement('div');
+      item.className = 'st-afk-item';
+      var img = document.createElement('img');
+      img.src = src;
+      img.alt = '';
+      img.loading = 'lazy';
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+
+    container.appendChild(gallery);
+  }
+
+  function initAFKGallery() {
+    fetch('afk-manifest.json')
+      .then(function(r) { return r.json(); })
+      .then(function(images) {
+        buildAFKGallery(images);
+        // Retry after Framer hydration in case container wasn't in DOM yet
+        setTimeout(function() { buildAFKGallery(images); }, 1500);
+        setTimeout(function() { buildAFKGallery(images); }, 4000);
+      })
+      .catch(function() {});
+  }
+
+  // Poll until the AFK container is in the DOM, then fetch manifest
+  var afkPollTimer = setInterval(function() {
+    if (document.querySelector('.framer-191bz3v-container')) {
+      clearInterval(afkPollTimer);
+      initAFKGallery();
+    }
+  }, 300);
+  setTimeout(function() { clearInterval(afkPollTimer); }, 15000);
 
   // ── Animation fallback: if Framer entrance animations don't fire, force elements visible ──
   // Targets hero, intro (2nd section), process cards, and AFK section.
