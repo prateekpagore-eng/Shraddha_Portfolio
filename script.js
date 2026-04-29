@@ -275,14 +275,9 @@
 
   // ── AFK Detour — 3D carousel ──
   function buildAFKCarousel(images) {
-    var container = document.querySelector('.framer-191bz3v-container');
+    var container = document.getElementById('st-afk-carousel-root');
     if (!container) return;
     if (container.querySelector('.st-afk-wrap')) return;
-
-    // Hide Framer's built-in carousel
-    var inner = container.firstElementChild;
-    if (inner) inner.style.display = 'none';
-
     if (!images || images.length === 0) return;
 
     // Build DOM
@@ -430,20 +425,16 @@
       .then(function(r) { return r.json(); })
       .then(function(images) {
         buildAFKCarousel(images);
-        setTimeout(function() { buildAFKCarousel(images); }, 1500);
-        setTimeout(function() { buildAFKCarousel(images); }, 4000);
       })
       .catch(function() {});
   }
 
-  // Poll until the AFK container is in the DOM, then fetch manifest
-  var afkPollTimer = setInterval(function() {
-    if (document.querySelector('.framer-191bz3v-container')) {
-      clearInterval(afkPollTimer);
-      initAFKCarousel();
-    }
-  }, 300);
-  setTimeout(function() { clearInterval(afkPollTimer); }, 15000);
+  // #st-afk-carousel-root is static HTML — init immediately on DOMContentLoaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAFKCarousel);
+  } else {
+    initAFKCarousel();
+  }
 
   // ── Animation fallback: if Framer entrance animations don't fire, force elements visible ──
   // Targets hero, intro (2nd section), process cards, and AFK section.
