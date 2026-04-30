@@ -273,26 +273,14 @@
   setTimeout(fixAboutImage, 1500);
   setTimeout(fixAboutImage, 3500);
 
-  // Redirect #about-1 and #experience nav anchors to our static section
-  // by removing those IDs from the now-hidden Framer elements after hydration
-  function fixAboutAnchors() {
-    // Target by data-st-hidden — survives React hydration unlike data-framer-name
-    var framerAbout = document.querySelector('[data-st-hidden="true"]');
-    if (framerAbout && framerAbout.id === 'about-1') {
-      framerAbout.style.display = 'none'; // belt-and-suspenders inline hide
-      framerAbout.removeAttribute('id');
-      var staticAbout = document.getElementById('st-about-section');
-      if (staticAbout) staticAbout.id = 'about-1';
-    }
-    var framerExp = document.querySelector('[data-framer-name="Experience List Content"]');
-    if (framerExp && framerExp.id === 'experience') {
-      framerExp.removeAttribute('id');
-      var staticExp = document.getElementById('experience-anchor');
-      if (staticExp) staticExp.id = 'experience';
-    }
-  }
-  setTimeout(fixAboutAnchors, 1500);
-  setTimeout(fixAboutAnchors, 3500);
+  // Redirect nav anchor clicks for #about-1 and #experience to our static section.
+  // CSS hides the Framer originals via "#main #about-1" which React cannot override.
+  document.querySelectorAll('a[href="#about-1"], a[href="#experience"]').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      var target = document.getElementById('st-about-section');
+      if (target) { e.preventDefault(); e.stopPropagation(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
 
   // ── AFK Detour — 3D carousel ──
   function buildAFKCarousel(images) {
