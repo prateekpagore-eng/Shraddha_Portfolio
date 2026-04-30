@@ -407,12 +407,13 @@
   /* ══════════════════════════════════════════════
      ABOUT SECTION — Static replica
   ══════════════════════════════════════════════ */
-  /* Hide Framer original */
-  .framer-rfr8c4[data-framer-name="about"] { display: none !important; }
+  /* Hide Framer original — targeted via data-st-hidden so it survives React hydration */
+  [data-st-hidden="true"] { display: none !important; }
 
   #st-about-section {
+    background-color: #d9d9d9;
     width: 100%;
-    padding: 100px 0 120px;
+    padding: 100px 0 140px;
     position: relative;
   }
 
