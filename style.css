@@ -527,12 +527,36 @@
 
   @media (max-width: 809.98px) {
     #st-about-section { padding: 60px 0 80px; }
-    .st-about-inner { padding: 0 20px; gap: 40px; }
-    .st-about-heading { font-size: 36px; }
-    .st-about-content { flex-direction: column; gap: 32px; }
+    .st-about-inner { padding: 0 20px; gap: 36px; }
+
+    /* Eyebrow — shorter lines + smaller text on small screens */
+    .st-about-line { flex: 0 0 30px; }
+    .st-about-eyebrow { font-size: 18px; }
+    .st-about-heading { font-size: 32px; }
+
+    /* Stack columns vertically */
+    .st-about-content { flex-direction: column; gap: 28px; }
     .st-about-left { flex: none; width: 100%; }
-    .st-about-photo-wrap { aspect-ratio: 4/3; }
-    .st-work-row { grid-template-columns: 1fr 1fr; row-gap: 4px; }
-    .st-work-company { grid-column: 1 / -1; font-size: 12px; }
-    .st-work-date { text-align: right; }
+
+    /* Square photo — portrait is too tall on mobile */
+    .st-about-photo-wrap { aspect-ratio: 1/1; border-radius: 16px; }
+
+    /* Left-align name + caption on mobile */
+    .st-about-name { text-align: left; }
+    .st-about-caption-bottom { align-items: center; }
+    .st-about-role { text-align: left; }
+
+    /* Bio readable size */
+    .st-about-bio { font-size: 15px; line-height: 1.65; }
+
+    /* Work history: role + date on one line, company below */
+    .st-work-row {
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto auto;
+      column-gap: 8px; row-gap: 3px;
+      padding: 12px 0;
+    }
+    .st-work-role  { grid-column: 1; grid-row: 1; font-size: 13px; }
+    .st-work-date  { grid-column: 2; grid-row: 1; font-size: 12px; text-align: right; white-space: nowrap; }
+    .st-work-company { grid-column: 1 / -1; grid-row: 2; font-size: 12px; }
   }
