@@ -273,14 +273,25 @@
   setTimeout(fixAboutImage, 1500);
   setTimeout(fixAboutImage, 3500);
 
-  // Redirect nav anchor clicks for #about-1 and #experience to our static section.
-  // CSS hides the Framer originals via "#main #about-1" which React cannot override.
-  document.querySelectorAll('a[href="#about-1"], a[href="#experience"]').forEach(function(a) {
-    a.addEventListener('click', function(e) {
-      var target = document.getElementById('st-about-section');
-      if (target) { e.preventDefault(); e.stopPropagation(); target.scrollIntoView({ behavior: 'smooth' }); }
+  // Redirect all #about-1 / #experience links (incl. hero CTA) to our static section.
+  // Uses capture phase + href rewrite so Framer's SPA router can't intercept first.
+  function fixAboutCTA() {
+    document.querySelectorAll('a[href="#about-1"], a[href="#experience"]').forEach(function(a) {
+      if (a.__stAboutFixed) return;
+      a.__stAboutFixed = true;
+      a.setAttribute('href', '#st-about-section');
+      a.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var target = document.getElementById('st-about-section');
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      }, true); // capture phase fires before Framer's handler
     });
-  });
+  }
+  fixAboutCTA();
+  setTimeout(fixAboutCTA, 300);
+  setTimeout(fixAboutCTA, 1200);
+  setTimeout(fixAboutCTA, 3000);
 
   // ── AFK Detour — 3D carousel ──
   function buildAFKCarousel(images) {
@@ -570,6 +581,11 @@
       card.appendChild(photo);
 
       // Hover — straighten + lift (only in scatter mode)
+      // Grid mode: plain click opens lightbox (no drag tracking in grid)
+      card.addEventListener('click', function() {
+        if (isGrid) openLightbox(img.src);
+      });
+
       card.addEventListener('mouseenter', function() {
         if (anyDragging || isGrid) return;
         card.classList.add('pg-hovered');
@@ -675,6 +691,7 @@
         setCanvasHeight(680, true);
         canvas.style.overflow = 'hidden';
         isGrid = false;
+        polaroids.forEach(function(c) { c.classList.remove('pg-grid-cursor'); });
         if (label) label.textContent = 'Grid View';
         if (icon)  icon.innerHTML = GRID_ICON;
         if (btn)   btn.setAttribute('aria-pressed', 'false');
@@ -685,6 +702,7 @@
         setCanvasHeight(gridHeight(polaroids.length, canvas.offsetWidth), true);
         canvas.style.overflow = 'visible';
         isGrid = true;
+        polaroids.forEach(function(c) { c.classList.add('pg-grid-cursor'); });
         if (label) label.textContent = 'Scatter View';
         if (icon)  icon.innerHTML = SCATTER_ICON;
         if (btn)   btn.setAttribute('aria-pressed', 'true');
@@ -714,6 +732,7 @@
         setCanvasHeight(gridHeight(images.length, cW), false);
         canvas.style.overflow = 'visible';
         isGrid = true;
+        polaroids.forEach(function(c) { c.classList.add('pg-grid-cursor'); });
         var lbl = document.getElementById('pg-toggle-label');
         var icn = document.getElementById('pg-toggle-icon');
         if (lbl) lbl.textContent = 'Scatter View';

@@ -353,7 +353,7 @@
   .st-afk-wrap {
     position: relative;
     width: 100%;
-    padding: 20px 0 40px;
+    padding: 56px 0 4px;
     overflow: hidden;
   }
 
@@ -454,6 +454,7 @@
   @media (max-width: 809.98px) {
     .st-afk-scene { height: 320px; perspective: 1400px; }
     .st-afk-card { width: 200px; height: 260px; margin-left: -100px; margin-top: -130px; }
+    .st-afk-wrap { padding: 44px 0 4px; }
     /* Reduce inner padding on mobile */
     .st-afk-inner { padding: 0 20px; }
     #st-afk-section { padding: 60px 0 80px; }
@@ -536,19 +537,21 @@
       0 1px 3px rgba(0,0,0,0.08),
       0 4px 16px rgba(0,0,0,0.12),
       0 12px 32px rgba(0,0,0,0.06);
-    border-radius: 2px;
+    border-radius: 8px;
     cursor: grab;
     user-select: none;
     -webkit-user-select: none;
     touch-action: none;
   }
   .pg-polaroid:active { cursor: grabbing; }
+  .pg-polaroid.pg-grid-cursor { cursor: pointer; }
 
   .pg-photo {
     width: 100%;
     aspect-ratio: 1 / 1;
     overflow: hidden;
     background: #e8e8e8;
+    border-radius: 5px;
   }
   .pg-photo img {
     width: 100%; height: 100%;
@@ -600,6 +603,8 @@
     border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 100px;
     padding: 12px 22px;
+    min-width: 158px;
+    justify-content: center;
     cursor: pointer;
     transition: background 0.2s, transform 0.15s;
     box-shadow: 0 4px 20px rgba(0,0,0,0.35);
