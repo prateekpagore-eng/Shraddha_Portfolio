@@ -447,27 +447,8 @@
     wrap.style.cssText = 'display:flex;justify-content:center;padding:0 0 48px;';
     var a = document.createElement('a');
     a.href = 'projects.html';
-    a.textContent = 'View More Projects';
-    a.style.cssText = [
-      'display:inline-flex;align-items:center;gap:8px;',
-      'font-family:\'Geist\',\'Geist Placeholder\',sans-serif;',
-      'font-size:15px;font-weight:400;letter-spacing:-0.02em;',
-      'color:#000;text-decoration:none;',
-      'border:1.5px solid rgba(0,0,0,0.2);border-radius:100px;',
-      'padding:14px 32px;',
-      'background:rgba(0,0,0,0.04);',
-      'transition:background 0.2s,border-color 0.2s;'
-    ].join('');
-    a.addEventListener('mouseenter', function() {
-      a.style.background = 'rgba(0,0,0,0.08)';
-      a.style.borderColor = 'rgba(0,0,0,0.4)';
-    });
-    a.addEventListener('mouseleave', function() {
-      a.style.background = 'rgba(0,0,0,0.04)';
-      a.style.borderColor = 'rgba(0,0,0,0.2)';
-    });
-    // Arrow icon
-    a.innerHTML = 'View More Projects <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    a.className = 'st-view-more-btn';
+    a.innerHTML = 'View More Projects <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;margin-left:4px" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     wrap.appendChild(a);
     work.appendChild(wrap);
   }
@@ -581,8 +562,7 @@
       var photo = document.createElement('div');
       photo.className = 'pg-photo';
       var img = document.createElement('img');
-      // Encode each path segment so spaces in folder names resolve correctly
-      img.src = src.split('/').map(function(p) { return encodeURIComponent(p); }).join('/');
+      img.src = src;
       img.alt = '';
       img.loading = 'lazy';
       img.draggable = false;
@@ -688,6 +668,7 @@
       var icon   = document.getElementById('pg-toggle-icon');
       if (!canvas) return;
 
+      var btn = document.getElementById('pg-toggle');
       if (isGrid) {
         // → Scatter
         applyCards(scatterPos, true);
@@ -696,6 +677,7 @@
         isGrid = false;
         if (label) label.textContent = 'Grid View';
         if (icon)  icon.innerHTML = GRID_ICON;
+        if (btn)   btn.setAttribute('aria-pressed', 'false');
       } else {
         // → Grid
         var gPos = computeGrid(polaroids.length, canvas.offsetWidth);
@@ -705,6 +687,7 @@
         isGrid = true;
         if (label) label.textContent = 'Scatter View';
         if (icon)  icon.innerHTML = SCATTER_ICON;
+        if (btn)   btn.setAttribute('aria-pressed', 'true');
       }
     }
 

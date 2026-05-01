@@ -22,4 +22,4 @@ function scanDir(dirName, outFile, exclude) {
 }
 
 scanDir('AFK detour images', 'afk-manifest.json');
-scanDir('Playground images', 'playground-manifest.json', ['thumbnail.png']);
+scanDir('playground-images', 'playground-manifest.json', ['thumbnail.png']);

@@ -1,6 +1,55 @@
   /* ── Prevent horizontal overflow on all screen sizes ── */
   html, body { overflow-x: hidden; max-width: 100%; }
 
+  /* ══════════════════════════════════════════════
+     WCAG 2.1 AA — Focus indicators + Contrast
+  ══════════════════════════════════════════════ */
+  /* Suppress browser default outline on our elements; restore via :focus-visible */
+  #st-hamburger,
+  #st-nav a,
+  .st-view-more-btn,
+  #pg-toggle,
+  #pg-lb-close { outline: none; }
+
+  /* Keyboard focus — dark ring on light surfaces */
+  #st-hamburger:focus-visible,
+  #st-nav a:focus-visible,
+  .st-view-more-btn:focus-visible {
+    outline: 2px solid #000;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  /* Keyboard focus — light ring on dark surfaces */
+  #pg-toggle:focus-visible,
+  #pg-lb-close:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+  }
+
+  /* ── View More button — moved to CSS for WCAG border contrast ──
+     Border rgba(0,0,0,0.45) on #d9d9d9 ≈ #777, giving ~3.4:1 against page bg (passes 3:1) */
+  .st-view-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Geist', 'Geist Placeholder', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: #000;
+    text-decoration: none;
+    border: 1.5px solid rgba(0, 0, 0, 0.45);
+    border-radius: 100px;
+    padding: 14px 32px;
+    background: transparent;
+    transition: background 0.2s, border-color 0.2s;
+    cursor: pointer;
+  }
+  .st-view-more-btn:hover {
+    background: rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.6);
+  }
+
   /* ── Hide original Framer nav ── */
   .framer-1lcmve6 { display: none !important; }
   /* ── Hide second fold tickers ── */
@@ -30,7 +79,7 @@
   }
   #st-hamburger {
     display: flex; flex-direction: column; gap: 5px;
-    cursor: pointer; padding: 6px; background: none; border: none; outline: none;
+    cursor: pointer; padding: 6px; background: none; border: none;
   }
   #st-hamburger span {
     display: block; width: 22px; height: 2px; background: #000;
