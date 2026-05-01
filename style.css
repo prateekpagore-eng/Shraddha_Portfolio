@@ -1,3 +1,6 @@
+  /* ── Prevent horizontal overflow on all screen sizes ── */
+  html, body { overflow-x: hidden; max-width: 100%; }
+
   /* ── Hide original Framer nav ── */
   .framer-1lcmve6 { display: none !important; }
   /* ── Hide second fold tickers ── */
