@@ -476,6 +476,294 @@
   setTimeout(injectViewMoreCTA, 1500);
   setTimeout(injectViewMoreCTA, 3500);
 
+  // ── Playground — polaroid scatter canvas ──
+  (function() {
+    var PG_W = 185, PG_H = 241; // card width, height (incl. bottom caption space)
+    var polaroids = [];
+    var scatterPos = []; // [{left, top, rot}] — scatter state, updated on drag
+    var isGrid = false;
+    var anyDragging = false;
+
+    var GRID_ICON = '<svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1.75" y="1.75" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="8.75" y="1.75" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="1.75" y="8.75" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="8.75" y="8.75" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>';
+    var SCATTER_ICON = '<svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="2" width="7" height="7" rx="1" transform="rotate(-12 1 2)" stroke="currentColor" stroke-width="1.5"/><rect x="8" y="6" width="7" height="7" rx="1" transform="rotate(10 8 6)" stroke="currentColor" stroke-width="1.5"/></svg>';
+
+    // Deterministic pseudo-random (no seed drift between images)
+    function rand(n) {
+      var x = Math.sin(n * 127.1 + 311.7) * 43758.5453;
+      return x - Math.floor(x);
+    }
+
+    function computeScatter(n, cW, cH) {
+      var out = [];
+      for (var i = 0; i < n; i++) {
+        out.push({
+          left: 10 + rand(i * 3 + 1) * Math.max(0, cW - PG_W - 20),
+          top:  10 + rand(i * 3 + 2) * Math.max(0, cH - PG_H - 20),
+          rot:  (rand(i * 3 + 3) - 0.5) * 26 // ‑13° to +13°
+        });
+      }
+      return out;
+    }
+
+    function computeGrid(n, cW) {
+      var gap = 16, pad = 24;
+      var cols = Math.max(2, Math.floor((cW - pad * 2 + gap) / (PG_W + gap)));
+      var out = [];
+      for (var i = 0; i < n; i++) {
+        out.push({
+          left: pad + (i % cols) * (PG_W + gap),
+          top:  pad + Math.floor(i / cols) * (PG_H + gap),
+          rot:  0
+        });
+      }
+      return out;
+    }
+
+    function applyCards(pos, animate) {
+      polaroids.forEach(function(card, i) {
+        if (animate) {
+          card.style.transition = 'left 0.42s cubic-bezier(0.4,0,0.2,1), top 0.42s cubic-bezier(0.4,0,0.2,1), transform 0.42s cubic-bezier(0.4,0,0.2,1)';
+        } else {
+          card.style.transition = 'none';
+        }
+        card.style.left = pos[i].left + 'px';
+        card.style.top  = pos[i].top  + 'px';
+        card.style.transform = 'rotate(' + pos[i].rot + 'deg)';
+      });
+      if (animate) {
+        setTimeout(function() {
+          polaroids.forEach(function(c) { c.style.transition = 'box-shadow 0.2s'; });
+        }, 480);
+      }
+    }
+
+    function setCanvasHeight(h, animate) {
+      var canvas = document.getElementById('pg-canvas');
+      if (!canvas) return;
+      canvas.style.transition = animate ? 'height 0.42s cubic-bezier(0.4,0,0.2,1)' : 'none';
+      canvas.style.height = h + 'px';
+    }
+
+    function gridHeight(n, cW) {
+      var gap = 16, pad = 24;
+      var cols = Math.max(2, Math.floor((cW - pad * 2 + gap) / (PG_W + gap)));
+      var rows = Math.ceil(n / cols);
+      return pad + rows * (PG_H + gap) + 60; // +60 so toggle doesn't cover last row
+    }
+
+    // ── Lightbox ──
+    function openLightbox(src) {
+      var lb  = document.getElementById('pg-lightbox');
+      var img = document.getElementById('pg-lb-img');
+      if (!lb || !img) return;
+      img.src = src;
+      lb.classList.add('pg-lb-open');
+      lb.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      // Re-trigger animation each open
+      var frame = document.getElementById('pg-lb-frame');
+      if (frame) { frame.style.animation = 'none'; frame.offsetHeight; frame.style.animation = ''; }
+    }
+    function closeLightbox() {
+      var lb = document.getElementById('pg-lightbox');
+      if (!lb) return;
+      lb.classList.remove('pg-lb-open');
+      lb.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    // ── Build a single polaroid card ──
+    function buildCard(src, idx) {
+      var card = document.createElement('div');
+      card.className = 'pg-polaroid';
+      card.style.zIndex = idx + 1;
+
+      var photo = document.createElement('div');
+      photo.className = 'pg-photo';
+      var img = document.createElement('img');
+      img.src = src;
+      img.alt = '';
+      img.loading = 'lazy';
+      img.draggable = false;
+      photo.appendChild(img);
+      card.appendChild(photo);
+
+      // Hover — straighten + lift (only in scatter mode)
+      card.addEventListener('mouseenter', function() {
+        if (anyDragging || isGrid) return;
+        card.classList.add('pg-hovered');
+        card.style.transition = 'transform 0.22s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s, z-index 0s';
+        card.style.transform = 'rotate(0deg) scale(1.07)';
+        card.style.zIndex = 120;
+      });
+      card.addEventListener('mouseleave', function() {
+        if (anyDragging) return;
+        card.classList.remove('pg-hovered');
+        card.style.transition = 'transform 0.25s ease, box-shadow 0.2s';
+        card.style.transform = 'rotate(' + scatterPos[idx].rot + 'deg) scale(1)';
+        card.style.zIndex = idx + 1;
+      });
+
+      // ── Drag + click ──
+      var startX, startY, startL, startT, didDrag, dragging = false;
+
+      function beginDrag(cx, cy) {
+        if (isGrid) return;
+        startX = cx; startY = cy;
+        startL = parseFloat(card.style.left) || 0;
+        startT = parseFloat(card.style.top)  || 0;
+        didDrag  = false;
+        dragging = true;
+        anyDragging = true;
+        card.classList.remove('pg-hovered');
+        card.classList.add('pg-dragging');
+        card.style.transition = 'none';
+        card.style.zIndex = 600;
+        card.style.transform = 'rotate(' + scatterPos[idx].rot * 0.4 + 'deg) scale(1.06)';
+      }
+
+      function duringDrag(cx, cy) {
+        if (!dragging) return;
+        var dx = cx - startX, dy = cy - startY;
+        if (Math.abs(dx) > 4 || Math.abs(dy) > 4) didDrag = true;
+        if (!didDrag) return;
+        var canvas = document.getElementById('pg-canvas');
+        var cW = canvas ? canvas.offsetWidth : 9999;
+        var cH = canvas ? canvas.offsetHeight : 9999;
+        card.style.left = Math.max(-PG_W * 0.4, Math.min(cW - PG_W * 0.6, startL + dx)) + 'px';
+        card.style.top  = Math.max(-PG_H * 0.4, Math.min(cH - PG_H * 0.6, startT + dy)) + 'px';
+      }
+
+      function endDrag() {
+        if (!dragging) return;
+        dragging = false;
+        anyDragging = false;
+        card.classList.remove('pg-dragging');
+        card.style.transition = 'box-shadow 0.2s';
+        card.style.zIndex = 80;
+        card.style.transform = 'rotate(' + scatterPos[idx].rot * 0.4 + 'deg) scale(1)';
+        if (didDrag) {
+          scatterPos[idx].left = parseFloat(card.style.left);
+          scatterPos[idx].top  = parseFloat(card.style.top);
+        } else {
+          openLightbox(img.src);
+        }
+      }
+
+      // Mouse
+      card.addEventListener('mousedown', function(e) {
+        if (e.button !== 0) return;
+        e.preventDefault();
+        beginDrag(e.clientX, e.clientY);
+        function onMM(e) { duringDrag(e.clientX, e.clientY); }
+        function onMU() {
+          endDrag();
+          document.removeEventListener('mousemove', onMM);
+          document.removeEventListener('mouseup', onMU);
+        }
+        document.addEventListener('mousemove', onMM);
+        document.addEventListener('mouseup', onMU);
+      });
+
+      // Touch
+      card.addEventListener('touchstart', function(e) {
+        var t = e.touches[0];
+        beginDrag(t.clientX, t.clientY);
+      }, { passive: true });
+      card.addEventListener('touchmove', function(e) {
+        if (!dragging) return;
+        e.preventDefault();
+        duringDrag(e.touches[0].clientX, e.touches[0].clientY);
+      }, { passive: false });
+      card.addEventListener('touchend', function() { endDrag(); });
+
+      return card;
+    }
+
+    // ── Toggle scatter ↔ grid ──
+    function switchView() {
+      var canvas = document.getElementById('pg-canvas');
+      var label  = document.getElementById('pg-toggle-label');
+      var icon   = document.getElementById('pg-toggle-icon');
+      if (!canvas) return;
+
+      if (isGrid) {
+        // → Scatter
+        applyCards(scatterPos, true);
+        setCanvasHeight(680, true);
+        canvas.style.overflow = 'hidden';
+        isGrid = false;
+        if (label) label.textContent = 'Grid View';
+        if (icon)  icon.innerHTML = GRID_ICON;
+      } else {
+        // → Grid
+        var gPos = computeGrid(polaroids.length, canvas.offsetWidth);
+        applyCards(gPos, true);
+        setCanvasHeight(gridHeight(polaroids.length, canvas.offsetWidth), true);
+        canvas.style.overflow = 'visible';
+        isGrid = true;
+        if (label) label.textContent = 'Scatter View';
+        if (icon)  icon.innerHTML = SCATTER_ICON;
+      }
+    }
+
+    // ── Boot ──
+    function initPlayground(images) {
+      var canvas = document.getElementById('pg-canvas');
+      var toggle = document.getElementById('pg-toggle');
+      if (!canvas || !toggle || canvas.querySelector('.pg-polaroid')) return;
+
+      images.forEach(function(src, i) {
+        var card = buildCard(src, i);
+        canvas.appendChild(card);
+        polaroids.push(card);
+      });
+
+      var cW = canvas.offsetWidth;
+      scatterPos = computeScatter(images.length, cW, 680);
+
+      // Mobile defaults to grid
+      if (window.innerWidth <= 809) {
+        var gPos = computeGrid(images.length, cW);
+        scatterPos.forEach(function(p, i) { p.left = gPos[i].left; p.top = gPos[i].top; p.rot = 0; });
+        applyCards(gPos, false);
+        setCanvasHeight(gridHeight(images.length, cW), false);
+        canvas.style.overflow = 'visible';
+        isGrid = true;
+        var lbl = document.getElementById('pg-toggle-label');
+        var icn = document.getElementById('pg-toggle-icon');
+        if (lbl) lbl.textContent = 'Scatter View';
+        if (icn) icn.innerHTML = SCATTER_ICON;
+      } else {
+        applyCards(scatterPos, false);
+      }
+
+      toggle.addEventListener('click', switchView);
+
+      // Lightbox close
+      var bg    = document.getElementById('pg-lb-bg');
+      var close = document.getElementById('pg-lb-close');
+      if (bg)    bg.addEventListener('click', closeLightbox);
+      if (close) close.addEventListener('click', closeLightbox);
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeLightbox();
+      });
+    }
+
+    function loadPlayground() {
+      fetch('playground-manifest.json')
+        .then(function(r) { return r.json(); })
+        .then(function(imgs) { initPlayground(imgs); })
+        .catch(function() {});
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadPlayground);
+    } else {
+      loadPlayground();
+    }
+  })();
+
   // ── Animation fallback: if Framer entrance animations don't fire, force elements visible ──
   // Targets hero, intro (2nd section), process cards, and AFK section.
   // Only acts on elements still at opacity:0 after 2.5s — won't disturb already-animated content.

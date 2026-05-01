@@ -415,6 +415,222 @@
   }
 
   /* ══════════════════════════════════════════════
+     PLAYGROUND SECTION
+  ══════════════════════════════════════════════ */
+  #st-playground-section {
+    background-color: #d9d9d9;
+    width: 100%;
+    padding: 80px 0 0;
+    position: relative;
+  }
+
+  .st-pg-inner {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 48px;
+  }
+
+  .st-pg-header {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 10px; text-align: center; width: 100%;
+  }
+
+  .st-pg-eyebrow-row {
+    display: flex; align-items: center; gap: 24px;
+    width: 100%; justify-content: center;
+  }
+  .st-pg-line { flex: 0 0 69px; height: 1px; opacity: 0.5; }
+  .st-pg-line-l { background: linear-gradient(90deg, rgba(84,84,84,0) 0%, rgba(0,0,0,0.5) 100%); }
+  .st-pg-line-r { background: linear-gradient(270deg, rgba(84,84,84,0) 0%, rgba(0,0,0,0.5) 100%); }
+
+  .st-pg-eyebrow {
+    font-family: 'Instrument Serif', serif;
+    font-size: 24px; font-style: italic; font-weight: 400;
+    color: rgba(0, 0, 0, 0.5); white-space: nowrap;
+  }
+
+  .st-pg-heading {
+    font-family: 'Inter Display', 'Inter', sans-serif;
+    font-size: 48px; font-weight: 400;
+    letter-spacing: -0.03em; line-height: 1.1;
+    color: #000; margin: 0; text-align: center;
+  }
+
+  /* Canvas wrapper — holds canvas + sticky toggle */
+  #pg-canvas-outer {
+    position: relative;
+    width: 100%;
+  }
+
+  /* The scatter canvas */
+  #pg-canvas {
+    position: relative;
+    width: 100%;
+    height: 680px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.035);
+    cursor: default;
+  }
+
+  /* ── Polaroid card ── */
+  .pg-polaroid {
+    position: absolute;
+    width: 185px;
+    background: #fff;
+    padding: 10px 10px 44px;
+    box-shadow:
+      0 1px 3px rgba(0,0,0,0.08),
+      0 4px 16px rgba(0,0,0,0.12),
+      0 12px 32px rgba(0,0,0,0.06);
+    border-radius: 2px;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+  }
+  .pg-polaroid:active { cursor: grabbing; }
+
+  .pg-photo {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #e8e8e8;
+  }
+  .pg-photo img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    pointer-events: none;
+  }
+
+  /* Hover state — lift and focus, handled in JS for rotate reset */
+  .pg-polaroid.pg-hovered {
+    box-shadow:
+      0 4px 8px rgba(0,0,0,0.1),
+      0 12px 40px rgba(0,0,0,0.2),
+      0 2px 4px rgba(0,0,0,0.08);
+  }
+
+  /* Active drag */
+  .pg-dragging {
+    box-shadow:
+      0 8px 16px rgba(0,0,0,0.14),
+      0 24px 60px rgba(0,0,0,0.28),
+      0 4px 8px rgba(0,0,0,0.1) !important;
+    cursor: grabbing !important;
+  }
+
+  /* ── Toggle bar ── */
+  #pg-toggle-bar {
+    position: absolute;
+    bottom: 24px;
+    left: 0; right: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 200;
+    pointer-events: none;
+  }
+
+  #pg-toggle {
+    pointer-events: all;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Geist', 'Geist Placeholder', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 100px;
+    padding: 12px 22px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+  }
+  #pg-toggle:hover {
+    background: rgba(0, 0, 0, 0.9);
+    transform: translateY(-1px);
+  }
+  #pg-toggle svg { display: block; flex-shrink: 0; }
+
+  /* ── Lightbox ── */
+  #pg-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+  }
+  #pg-lightbox.pg-lb-open { display: flex; }
+
+  #pg-lb-bg {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  #pg-lb-frame {
+    position: relative;
+    z-index: 1;
+    animation: pg-lb-pop 0.25s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  }
+
+  @keyframes pg-lb-pop {
+    from { opacity: 0; transform: scale(0.88); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  #pg-lb-polaroid {
+    background: #fff;
+    padding: 14px 14px 60px;
+    box-shadow: 0 32px 100px rgba(0,0,0,0.6), 0 8px 24px rgba(0,0,0,0.3);
+    border-radius: 2px;
+    max-width: min(82vw, 540px);
+    display: flex;
+  }
+  #pg-lb-img {
+    width: 100%;
+    max-height: 75vh;
+    object-fit: contain;
+    display: block;
+  }
+
+  #pg-lb-close {
+    position: fixed;
+    top: 20px; right: 24px;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #fff;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+    z-index: 2;
+  }
+  #pg-lb-close:hover { background: rgba(255,255,255,0.25); }
+
+  @media (max-width: 809.98px) {
+    .st-pg-inner { padding: 0 20px; }
+    .st-pg-heading { font-size: 36px; }
+    #st-playground-section { padding: 60px 0 0; }
+    #pg-canvas { overflow: visible; }
+  }
+
+  /* ══════════════════════════════════════════════
      ABOUT SECTION — Static replica
   ══════════════════════════════════════════════ */
   /* Hide Framer original — #main scope means React can never affect this rule */
