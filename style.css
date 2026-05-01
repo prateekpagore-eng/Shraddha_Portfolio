@@ -353,7 +353,7 @@
   .st-afk-wrap {
     position: relative;
     width: 100%;
-    padding: 56px 0 4px;
+    padding: 40px 0 40px;
     overflow: hidden;
   }
 
@@ -454,7 +454,7 @@
   @media (max-width: 809.98px) {
     .st-afk-scene { height: 320px; perspective: 1400px; }
     .st-afk-card { width: 200px; height: 260px; margin-left: -100px; margin-top: -130px; }
-    .st-afk-wrap { padding: 44px 0 4px; }
+    .st-afk-wrap { padding: 30px 0 30px; }
     /* Reduce inner padding on mobile */
     .st-afk-inner { padding: 0 20px; }
     #st-afk-section { padding: 60px 0 80px; }

@@ -273,10 +273,15 @@
   setTimeout(fixAboutImage, 1500);
   setTimeout(fixAboutImage, 3500);
 
-  // Redirect all #about-1 / #experience links (incl. hero CTA) to our static section.
-  // Uses capture phase + href rewrite so Framer's SPA router can't intercept first.
+  // Redirect About Me hero CTA + all #about-1/#experience links to our static section.
+  // Framer hydration can restore the original lemon squeezy checkout URL, so we
+  // match by href pattern AND by button text as a fallback.
   function fixAboutCTA() {
-    document.querySelectorAll('a[href="#about-1"], a[href="#experience"]').forEach(function(a) {
+    document.querySelectorAll('a').forEach(function(a) {
+      var href = a.getAttribute('href') || '';
+      var isAbout = href === '#about-1' || href === '#experience' ||
+                    href.indexOf('lemonsqueezy') !== -1 || href.indexOf('lmsq') !== -1;
+      if (!isAbout) return;
       if (a.__stAboutFixed) return;
       a.__stAboutFixed = true;
       a.setAttribute('href', '#st-about-section');
@@ -285,7 +290,7 @@
         e.stopPropagation();
         var target = document.getElementById('st-about-section');
         if (target) target.scrollIntoView({ behavior: 'smooth' });
-      }, true); // capture phase fires before Framer's handler
+      }, true); // capture phase — fires before Framer's router
     });
   }
   fixAboutCTA();
