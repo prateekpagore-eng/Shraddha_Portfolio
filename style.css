@@ -69,31 +69,38 @@
      SECOND FOLD — reduce top/bottom padding 0.7×
      framer-ts46om is the intro section container
   ══════════════════════════════════════════════ */
-  /* Desktop: 80px → 56px */
-  .framer-ts46om { padding-top: 56px !important; padding-bottom: 56px !important; }
-  /* Tablet ~810px: 56px → 39px */
+  /* Desktop: 80px → 42px (−25% from prior 56px) */
+  .framer-ts46om { padding-top: 42px !important; padding-bottom: 42px !important; }
+  /* Tablet ~810px: → 29px */
   @media (min-width: 810px) and (max-width: 1439.98px) {
-    .framer-ts46om { padding-top: 39px !important; padding-bottom: 39px !important; }
+    .framer-ts46om { padding-top: 29px !important; padding-bottom: 29px !important; }
   }
-  /* Mobile: 40px → 28px */
+  /* Mobile: → 21px */
   @media (max-width: 809.98px) {
-    .framer-ts46om { padding-top: 28px !important; padding-bottom: 28px !important; }
+    .framer-ts46om { padding-top: 21px !important; padding-bottom: 21px !important; }
   }
+  /* Work section: 120px → 90px (−25%) */
+  .framer-1eicbpg { padding-top: 90px !important; padding-bottom: 90px !important; }
 
   /* ══════════════════════════════════════════════
      PROCESS CARDS — mobile height fix
   ══════════════════════════════════════════════ */
   @media (max-width: 809.98px) {
-    /* Cards wrapper */
+    /* Cards wrapper — switch from horizontal row to vertical stack */
     .framer-1mpb03n {
+      flex-direction: column !important;
       overflow: visible !important;
       height: auto !important;
+      gap: 16px !important;
     }
-    /* Each card item */
+    /* Each card item — full width, auto height, reset horizontal sizing */
     .framer-12koumt {
+      flex: none !important;
+      width: 100% !important;
       height: auto !important;
+      min-height: 0 !important;
+      padding: 32px 24px !important;
       overflow: visible !important;
-      flex-shrink: 0 !important;
     }
     /* Card inner containers */
     .framer-hFxSj, .framer-B4GU3 {
@@ -270,7 +277,7 @@
     font-size: 24px;
     font-style: italic;
     font-weight: 400;
-    color: #000;
+    color: rgba(0, 0, 0, 0.5);
     white-space: nowrap;
   }
 
@@ -448,7 +455,7 @@
   .st-about-eyebrow {
     font-family: 'Instrument Serif', serif;
     font-size: 24px; font-style: italic; font-weight: 400;
-    color: #000; white-space: nowrap;
+    color: rgba(0, 0, 0, 0.5); white-space: nowrap;
   }
 
   .st-about-heading {
