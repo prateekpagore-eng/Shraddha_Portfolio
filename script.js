@@ -451,7 +451,7 @@
     a.style.cssText = [
       'display:inline-flex;align-items:center;gap:8px;',
       'font-family:\'Geist\',\'Geist Placeholder\',sans-serif;',
-      'font-size:15px;font-weight:600;letter-spacing:-0.02em;',
+      'font-size:15px;font-weight:400;letter-spacing:-0.02em;',
       'color:#000;text-decoration:none;',
       'border:1.5px solid rgba(0,0,0,0.2);border-radius:100px;',
       'padding:14px 32px;',
@@ -581,7 +581,8 @@
       var photo = document.createElement('div');
       photo.className = 'pg-photo';
       var img = document.createElement('img');
-      img.src = src;
+      // Encode each path segment so spaces in folder names resolve correctly
+      img.src = src.split('/').map(function(p) { return encodeURIComponent(p); }).join('/');
       img.alt = '';
       img.loading = 'lazy';
       img.draggable = false;
@@ -753,7 +754,20 @@
     function loadPlayground() {
       fetch('playground-manifest.json')
         .then(function(r) { return r.json(); })
-        .then(function(imgs) { initPlayground(imgs); })
+        .then(function(imgs) {
+          // Wait until #pg-canvas has a real painted width (avoids all cards
+          // collapsing to left:10,top:10 when offsetWidth is 0 on first read)
+          var attempts = 0;
+          function tryInit() {
+            var canvas = document.getElementById('pg-canvas');
+            if (canvas && canvas.offsetWidth > 50) {
+              initPlayground(imgs);
+            } else if (attempts++ < 40) {
+              setTimeout(tryInit, 80);
+            }
+          }
+          requestAnimationFrame(tryInit);
+        })
         .catch(function() {});
     }
 
