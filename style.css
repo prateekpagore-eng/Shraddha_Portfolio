@@ -517,6 +517,14 @@
     width: 100%;
   }
 
+  /* Mobile grid — single-row horizontal scroll */
+  #pg-canvas-outer.pg-hscroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+
   /* The scatter canvas */
   #pg-canvas {
     position: relative;
@@ -576,15 +584,15 @@
     cursor: grabbing !important;
   }
 
-  /* ── Toggle bar ── */
+  /* ── Toggle bar — sits below canvas, pulled up to visually overlap it ── */
   #pg-toggle-bar {
-    position: absolute;
-    bottom: 24px;
-    left: 0; right: 0;
     display: flex;
     justify-content: center;
     z-index: 200;
     pointer-events: none;
+    margin-top: -52px;
+    padding-bottom: 28px;
+    position: relative;
   }
 
   #pg-toggle {

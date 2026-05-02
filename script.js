@@ -516,6 +516,34 @@
       return out;
     }
 
+    // Single horizontal row for mobile — canvas scrolls sideways
+    function computeGridMobile(n) {
+      var gap = 12, pad = 16;
+      var out = [];
+      for (var i = 0; i < n; i++) {
+        out.push({ left: pad + i * (PG_W + gap), top: pad, rot: 0 });
+      }
+      return out;
+    }
+
+    function isMobile() { return window.innerWidth <= 809; }
+
+    function setHScroll(on) {
+      var outer = document.getElementById('pg-canvas-outer');
+      var canvas = document.getElementById('pg-canvas');
+      if (!outer || !canvas) return;
+      if (on) {
+        outer.classList.add('pg-hscroll');
+        var gap = 12, pad = 16;
+        canvas.style.width  = (pad + polaroids.length * (PG_W + gap) - gap + pad) + 'px';
+        canvas.style.height = (pad * 2 + PG_H) + 'px';
+        canvas.style.overflow = 'visible';
+      } else {
+        outer.classList.remove('pg-hscroll');
+        canvas.style.width  = '';
+      }
+    }
+
     function applyCards(pos, animate) {
       polaroids.forEach(function(card, i) {
         if (animate) {
@@ -692,6 +720,7 @@
       var btn = document.getElementById('pg-toggle');
       if (isGrid) {
         // → Scatter
+        setHScroll(false);
         applyCards(scatterPos, true);
         setCanvasHeight(680, true);
         canvas.style.overflow = 'hidden';
@@ -702,12 +731,18 @@
         if (btn)   btn.setAttribute('aria-pressed', 'false');
       } else {
         // → Grid
-        var gPos = computeGrid(polaroids.length, canvas.offsetWidth);
-        applyCards(gPos, true);
-        setCanvasHeight(gridHeight(polaroids.length, canvas.offsetWidth), true);
-        canvas.style.overflow = 'visible';
         isGrid = true;
         polaroids.forEach(function(c) { c.classList.add('pg-grid-cursor'); });
+        if (isMobile()) {
+          var mPos = computeGridMobile(polaroids.length);
+          setHScroll(true);
+          applyCards(mPos, false);
+        } else {
+          var gPos = computeGrid(polaroids.length, canvas.offsetWidth);
+          applyCards(gPos, true);
+          setCanvasHeight(gridHeight(polaroids.length, canvas.offsetWidth), true);
+          canvas.style.overflow = 'visible';
+        }
         if (label) label.textContent = 'Scatter View';
         if (icon)  icon.innerHTML = SCATTER_ICON;
         if (btn)   btn.setAttribute('aria-pressed', 'true');
@@ -729,13 +764,11 @@
       var cW = canvas.offsetWidth;
       scatterPos = computeScatter(images.length, cW, 680);
 
-      // Mobile defaults to grid
+      // Mobile defaults to horizontal grid
       if (window.innerWidth <= 809) {
-        var gPos = computeGrid(images.length, cW);
-        scatterPos.forEach(function(p, i) { p.left = gPos[i].left; p.top = gPos[i].top; p.rot = 0; });
-        applyCards(gPos, false);
-        setCanvasHeight(gridHeight(images.length, cW), false);
-        canvas.style.overflow = 'visible';
+        var mPos = computeGridMobile(images.length);
+        setHScroll(true);
+        applyCards(mPos, false);
         isGrid = true;
         polaroids.forEach(function(c) { c.classList.add('pg-grid-cursor'); });
         var lbl = document.getElementById('pg-toggle-label');
