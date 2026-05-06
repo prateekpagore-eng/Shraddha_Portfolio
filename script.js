@@ -44,7 +44,7 @@
       var renameFrom = null, renameTo = null;
       if (href.indexOf('bravo') !== -1) { renameFrom = 'Bravo'; renameTo = 'Kyoho Website Design'; }
       else if (href.indexOf('nitro') !== -1) { renameFrom = null; renameTo = 'Nuvama FinSmart'; }
-      else if (href.indexOf('fargo') !== -1) { renameFrom = null; renameTo = 'Coming Soon'; }
+      else if (href.indexOf('fargo') !== -1) { renameFrom = null; renameTo = 'Ola Redesign'; }
       if (renameTo) {
         var titleEls = a.querySelectorAll('[class*="framer-"]');
         titleEls.forEach(function(el) {
@@ -105,13 +105,16 @@
           img3.style.height = '100%';
         }
       } else if (href.indexOf('fargo') !== -1) {
-        card.classList.add('st-coming-soon-card');
-        if (!card.querySelector('.st-coming-soon')) {
-          var badge = document.createElement('div');
-          badge.className = 'st-coming-soon';
-          badge.textContent = 'Coming soon';
-          card.style.position = 'relative';
-          card.appendChild(badge);
+        thumbContainer.classList.add('st-has-thumb');
+        var img4 = thumbContainer.querySelector('img');
+        if (img4) {
+          img4.src = 'case-studies/Ola/images/image-import-7.png';
+          img4.srcset = 'case-studies/Ola/images/image-import-7.png';
+          img4.alt = 'Ola Redesign';
+          img4.style.opacity = '1';
+          img4.style.objectFit = 'cover';
+          img4.style.width = '100%';
+          img4.style.height = '100%';
         }
       }
     });
@@ -124,6 +127,7 @@
       if (href.indexOf('strida') !== -1) dest = 'elevate.html';
       else if (href.indexOf('bravo') !== -1) dest = 'kyoho.html';
       else if (href.indexOf('nitro') !== -1) dest = 'nuvama.html';
+      else if (href.indexOf('fargo') !== -1) dest = 'case-studies/Ola/ola.html';
       if (dest) {
         a.setAttribute('href', dest);
         a.removeEventListener('click', a.__stHandler);
@@ -138,10 +142,6 @@
           }
         };
         a.addEventListener('click', a.__stHandler);
-      } else if (href.indexOf('fargo') !== -1) {
-        a.removeEventListener('click', a.__stHandler);
-        a.__stHandler = function(e) { e.preventDefault(); e.stopPropagation(); };
-        a.addEventListener('click', a.__stHandler);
       }
     });
   }
@@ -155,7 +155,7 @@
     strida: ['Brand Design', 'Responsive Web', '2025'],
     bravo:  ['SaaS', 'B2B & B2C', 'Marketplace'],
     nitro:  ['Fintech', 'Product Design', 'Tablet'],
-    fargo:  ['Coming Soon']
+    fargo:  ['UI Redesign', 'Conceptual', 'Mobility']
   };
 
   function patchWorkCardPills() {
@@ -165,7 +165,7 @@
       if (href.indexOf('strida') !== -1) slug = 'strida';
       else if (href.indexOf('bravo') !== -1) slug = 'bravo';
       else if (href.indexOf('nitro') !== -1) slug = 'nitro';
-      else if (href.indexOf('fargo') !== -1) slug = 'fargo';
+      else if (href.indexOf('fargo') !== -1 || href.indexOf('ola.html') !== -1) slug = 'fargo';
       if (!slug) return;
 
       var pills = CARD_PILLS[slug];

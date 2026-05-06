@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vybe OTT App — Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=Rubik:wght@400;500;600;700&family=Lato:wght@400;700&family=League+Gothic&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #1a1a1a;
+      color: #ffffff;
+      font-family: 'Rubik', sans-serif;
+      overflow-x: hidden;
+    }
+
+    img { display: block; max-width: 100%; height: auto; }
+
+    /* ── Page wrapper ── */
+    .wrap {
+      max-width: 1151px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* ────────────────────────────────
+       HERO
+    ──────────────────────────────── */
+    .hero {
+      position: relative;
+      padding: 120px 0 0;
+      overflow: hidden;
+    }
+
+    /* blurred glow — matches Vector 8 (blur:175, white 18%) */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-10%);
+      width: clamp(300px, 60vw, 700px);
+      height: clamp(250px, 40vw, 500px);
+      background: radial-gradient(ellipse at center, rgba(255,255,255,0.18) 0%, transparent 65%);
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .hero-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 837px;
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(32px, 7vw, 72px);
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.08;
+    }
+
+    .hero-subtitle {
+      font-family: 'Rubik', sans-serif;
+      font-size: clamp(14px, 2.5vw, 18px);
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .hero-desc-block {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .hero-desc {
+      font-family: 'Rubik', sans-serif;
+      font-size: clamp(14px, 2vw, 16px);
+      font-weight: 400;
+      color: #e3e3e3;
+      line-height: 1.7;
+    }
+
+    .hero-tags {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px 20px;
+    }
+
+    .hero-tag {
+      font-family: 'Rubik', sans-serif;
+      font-size: clamp(13px, 2vw, 18px);
+      font-weight: 600;
+      color: #e3e3e3;
+    }
+
+    .hero-divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(227,227,227,0.2);
+    }
+
+    /* ────────────────────────────────
+       MAIN CONTENT STACK
+    ──────────────────────────────── */
+    .content-stack {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(64px, 12vw, 150px);
+      padding: clamp(64px, 10vw, 120px) 0 clamp(64px, 10vw, 150px);
+    }
+
+    /* ── Shared section heading ── */
+    .sec-heading {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ────────────────────────────────
+       COVER IMAGE
+    ──────────────────────────────── */
+    .cover-img {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .cover-img img { width: 100%; }
+
+    /* ────────────────────────────────
+       THE CHALLENGE
+    ──────────────────────────────── */
+    .challenge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(40px, 8vw, 100px);
+    }
+
+    .challenge-text { display: flex; flex-direction: column; gap: 24px; }
+
+    .challenge-desc {
+      font-family: 'Rubik', sans-serif;
+      font-size: clamp(14px, 2vw, 16px);
+      color: #e3e3e3;
+      line-height: 1.9;
+    }
+
+    .mockup-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+
+    .mockup-wrap img {
+      width: 100%;
+      transform: rotate(-7.69deg) scale(1.05);
+      transform-origin: center center;
+    }
+
+    /* ────────────────────────────────
+       THE APPROACH
+    ──────────────────────────────── */
+    .approach {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(48px, 8vw, 100px);
+    }
+
+    .approach-text-block {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(32px, 5vw, 50px);
+      padding: 0 85px;
+    }
+
+    .approach-items {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(28px, 5vw, 40px);
+      padding-right: 100px;
+    }
+
+    .approach-item h3 {
+      font-family: 'Rubik', sans-serif;
+      font-size: clamp(17px, 3vw, 24px);
+      font-weight: 700;
+      color: #e3e3e3;
+      line-height: 1.4;
+      margin-bottom: 14px;
+    }
+
+    .approach-item p {
+      font-family: 'Rubik', sans-serif;
+      font-size: clamp(14px, 2vw, 16px);
+      font-weight: 400;
+      color: #e3e3e3;
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+
+    /* Info cards row */
+    .info-cards {
+      display: flex;
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .blue-card {
+      background: #e5f6ff;
+      border-radius: 10px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .blue-card-main {
+      flex: 0 0 55%;
+      padding: 24px 24px 24px 60px;
+      align-items: flex-start;
+    }
+
+    .blue-card-side-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+    }
+
+    .blue-card h3 {
+      font-family: 'League Gothic', sans-serif;
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 400;
+      color: #292d32;
+      text-align: center;
+      width: 100%;
+      line-height: 1.1;
+    }
+
+    .blue-card p {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(13px, 1.8vw, 15px);
+      color: #292d32;
+      line-height: 1.625;
+    }
+
+    /* Bar chart */
+    .bar-chart { width: 100%; display: flex; flex-direction: column; gap: 14px; margin-top: 24px; }
+
+    .bar-row { display: flex; flex-direction: column; gap: 6px; }
+
+    .bar-track {
+      background: rgba(41,45,50,0.12);
+      border-radius: 4px;
+      height: 10px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: #292d32;
+      border-radius: 4px;
+    }
+
+    .bar-label {
+      font-family: 'Rubik', sans-serif;
+      font-size: 12px;
+      color: #292d32;
+      line-height: 1.5;
+    }
+
+    /* ────────────────────────────────
+       THE SOLUTION
+    ──────────────────────────────── */
+    .solution {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .solution-desc {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(14px, 2vw, 16px);
+      color: #e3e3e3;
+      line-height: 1.7;
+      max-width: 979px;
+    }
+
+    /* ────────────────────────────────
+       FULL-WIDTH IMAGES
+    ──────────────────────────────── */
+    .full-img img { width: 100%; }
+
+    /* ────────────────────────────────
+       COMPONENTS SECTION
+    ──────────────────────────────── */
+    .components { display: flex; flex-direction: column; align-items: center; gap: 40px; }
+
+    .components-row {
+      display: flex;
+      gap: 45px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ────────────────────────────────
+       UI DESIGNS
+    ──────────────────────────────── */
+    .ui-designs { display: flex; flex-direction: column; gap: 40px; }
+
+    /* Desktop: three screens side by side */
+    .screens-row {
+      display: flex;
+      gap: 40px;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .screens-row img { flex: 1; min-width: 0; }
+
+    /* ────────────────────────────────
+       QUOTE BOX
+    ──────────────────────────────── */
+    .quote-box {
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 10px;
+      padding: 20px 28px;
+      max-width: 1003px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .quote-box p {
+      font-family: 'Rubik', sans-serif;
+      font-size: clamp(16px, 3vw, 28px);
+      font-weight: 500;
+      color: #ffffff;
+      line-height: 1.45;
+    }
+
+    /* ────────────────────────────────
+       SCREEN SECTIONS (labelled)
+    ──────────────────────────────── */
+    .screen-sec {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    /* ────────────────────────────────
+       RECOMMENDATIONS LABEL
+    ──────────────────────────────── */
+    .reco-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+    }
+
+    .reco-label {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      align-self: flex-end;
+    }
+
+    .reco-line { width: 57px; height: 3px; background: #ffffff; flex-shrink: 0; }
+
+    .reco-text {
+      font-family: 'League Gothic', sans-serif;
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 400;
+      color: #ffffff;
+    }
+
+    /* ────────────────────────────────
+       FOOTER CTA
+    ──────────────────────────────── */
+    .footer-sec {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .footer-sec img { width: 100%; }
+
+    .footer-cta {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      padding: clamp(40px, 8vw, 60px) 24px clamp(48px, 8vw, 80px);
+      background-color: #1a1a1a;
+    }
+
+    .footer-line1 {
+      font-family: 'League Gothic', sans-serif;
+      font-size: clamp(28px, 5vw, 64px);
+      font-weight: 400;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    .footer-vybe {
+      font-family: 'League Gothic', sans-serif;
+      font-size: clamp(90px, 22vw, 340px);
+      font-weight: 400;
+      line-height: 0.82;
+      background: linear-gradient(180deg, #ffecda 0%, #d37e2a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+    }
+
+    /* ════════════════════════════════
+       RESPONSIVE — TABLET  ≤ 900px
+    ════════════════════════════════ */
+    @media (max-width: 900px) {
+      .wrap { padding: 0 28px; }
+
+      .hero { padding-top: 80px; }
+
+      .blue-card-main { flex: 0 0 52%; padding: 20px; }
+      .approach-text-block { padding: 0 32px; }
+      .approach-items { padding-right: 32px; }
+    }
+
+    /* ════════════════════════════════
+       RESPONSIVE — MOBILE  ≤ 640px
+    ════════════════════════════════ */
+    @media (max-width: 640px) {
+      .wrap { padding: 0 18px; }
+
+      /* Hero */
+      .hero { padding-top: 60px; }
+      .hero-inner { gap: 22px; }
+      .hero-desc-block { gap: 24px; }
+
+      /* Content */
+      .content-stack { gap: 56px; padding: 56px 0 64px; }
+
+      /* Challenge */
+      .mockup-wrap img { transform: none; }
+
+      /* Approach */
+      .approach { gap: 44px; }
+      .approach-text-block { padding: 0; }
+      .approach-items { padding-right: 0; }
+
+      /* Info cards — stack vertically */
+      .info-cards { flex-direction: column; }
+      .blue-card-main { flex: none; width: 100%; padding: 20px; }
+      .blue-card-side-col { flex: none; width: 100%; }
+      .blue-card-side-col .blue-card { flex: none; min-height: 180px; }
+
+      /* Three screens — horizontal scroll strip */
+      .screens-row {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 16px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 12px;
+        align-items: flex-end;
+        /* hide scrollbar but keep scroll */
+        scrollbar-width: none;
+      }
+      .screens-row::-webkit-scrollbar { display: none; }
+      .screens-row img {
+        flex: 0 0 72vw;
+        max-width: 260px;
+        min-width: 0;
+        scroll-snap-align: start;
+      }
+
+      /* Components — stack */
+      .components-row {
+        flex-direction: column;
+        gap: 28px;
+      }
+      .components-row img {
+        width: 100%;
+        max-width: 340px;
+        height: auto;
+        max-height: none;
+        margin: 0 auto;
+      }
+
+      /* Quote box */
+      .quote-box { padding: 16px 20px; }
+
+      /* Screen sections */
+      .screen-sec { gap: 24px; }
+      .screen-sec img { max-width: 280px; width: 80%; }
+
+      /* Reco label — center on mobile */
+      .reco-label { align-self: center; }
+    }
+
+    /* ════════════════════════════════
+       RESPONSIVE — SMALL  ≤ 380px
+    ════════════════════════════════ */
+    @media (max-width: 380px) {
+      .wrap { padding: 0 14px; }
+      .content-stack { gap: 48px; }
+      .screens-row img { flex: 0 0 82vw; }
+      .screen-sec img { width: 90%; max-width: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════
+       HERO
+  ═══════════════════════════════ -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-inner">
+
+        <div class="hero-title-block">
+          <h1 class="hero-title">Vybe OTT App</h1>
+          <p class="hero-subtitle">App Design &bull; 2025</p>
+        </div>
+
+        <div class="hero-desc-block">
+          <p class="hero-desc">Vybe is a modern OTT streaming platform designed to deliver a seamless and immersive entertainment experience for today's digital-first users. With a growing library of movies, series, and exclusive content, the platform focuses on effortless content discovery, personalized viewing journeys, and a visually engaging interface. This project explores how strategic UX thinking and refined UI design can elevate engagement balancing discoverability, performance, and delight across the entire viewing experience.</p>
+
+          <div class="hero-tags">
+            <span class="hero-tag">OTT Platform</span>
+            <span class="hero-tag">.</span>
+            <span class="hero-tag">Engagement</span>
+            <span class="hero-tag">.</span>
+            <span class="hero-tag">Product Design</span>
+            <span class="hero-tag">.</span>
+            <span class="hero-tag">Binge Behaviour</span>
+          </div>
+
+          <div class="hero-divider"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════
+       MAIN CONTENT
+  ═══════════════════════════════ -->
+  <div class="wrap">
+    <div class="content-stack">
+
+      <!-- Cover Image -->
+      <div class="cover-img">
+        <img src="images/image-import-70.png" alt="Vybe OTT App Cover">
+      </div>
+
+      <!-- ── The Challenge ── -->
+      <div class="challenge">
+        <div class="challenge-text">
+          <h2 class="sec-heading">The Challenge</h2>
+          <p class="challenge-desc">Most OTT platforms today focus heavily on content quantity and standard navigation patterns, overlooking emotional UX, personalization, and mood-based discovery. Users often feel overwhelmed, disconnected, or uninspired while browsing struggling to find content that truly matches their current vibe or viewing intent.</p>
+        </div>
+        <div class="mockup-wrap">
+          <img src="images/image-import-30.png" alt="App Mockup">
+        </div>
+      </div>
+
+      <!-- ── The Approach ── -->
+      <div class="approach">
+
+        <div class="approach-text-block">
+          <h2 class="sec-heading">The Approach</h2>
+          <div class="approach-items">
+
+            <div class="approach-item">
+              <h3>User Research</h3>
+              <p>Before designing VYBE, it was essential to understand how users interact with current OTT platforms, what frustrates them, what they enjoy, and what they wish these platforms offered. Simultaneously, reviewing market trends helped identify key gaps and innovation opportunities.</p>
+            </div>
+
+            <div class="approach-item">
+              <h3>Research Goals</h3>
+              <p>Understand how users currently discover content on OTT apps.
+Identify popular platforms preferences (Netflix, Hotstar, Prime Video, etc.)
+Explore emotional and mood-based usage patterns.
+Spot opportunities in personalization.</p>
+            </div>
+
+            <div class="approach-item">
+              <h3>Methods Used</h3>
+              <p>Quick user surveys and informal interviews (5 OTT users)
+Secondary research through articles &amp; user reviews.</p>
+            </div>
+
+            <div class="approach-item">
+              <h3>Target Users</h3>
+              <p>Age: 18–45
+Devices: Primarily mobile, some tablet use
+Behavior: Binge-watchers, casual scrollers, movie lovers, multi-taskers
+Usage Times: Evenings, weekends, commutes</p>
+            </div>
+
+            <div class="approach-item">
+              <h3>User Pain Points</h3>
+              <p>Content Overload
+Annoying Autoplay
+Inconsistent Cross-Device Sync
+Cluttered watchlist
+Confusing Navigation
+Repetitive Recommendations
+Subtitle/Audio Customization
+Lack of Social Integration</p>
+            </div>
+
+            <div class="approach-item">
+              <h3>Real User Insights Sourced from Reddit &amp; Quora</h3>
+              <p>There's so much content, I don't even know where to start.
+Wish I could tag shows as 'feel good' or 'serious' and just filter that.
+Let me watch something with my long-distance friends and react live.
+Every platform just shows the same old Top 10 list. Give me something fresh!
+Subscription costs of certain OTT's.</p>
+            </div>
+
+            <div class="approach-item">
+              <h3>How Users Discover New Content</h3>
+              <p>OTT home &amp; AI recommendations
+Social media
+Word of mouth
+Trending / Top 10 lists in apps
+Online reviews &amp; ratings (IMDb, Blogs)
+Search bar (specific content)
+Celebrity &amp; Director Influence
+News, articles &amp; magazines</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Info Cards -->
+        <div class="info-cards">
+
+          <!-- Bar Chart Card -->
+          <div class="blue-card blue-card-main">
+            <h3 style="text-align:left">Average viewing hour<br>per week</h3>
+            <div class="bar-chart">
+              <div class="bar-row">
+                <div class="bar-track"><div class="bar-fill" style="width:80%"></div></div>
+                <span class="bar-label">Youtube, Disney+ (10-15 hours)</span>
+              </div>
+              <div class="bar-row">
+                <div class="bar-track"><div class="bar-fill" style="width:98%"></div></div>
+                <span class="bar-label">Anime, K-Drama (15-20 hours)</span>
+              </div>
+              <div class="bar-row">
+                <div class="bar-track"><div class="bar-fill" style="width:69%"></div></div>
+                <span class="bar-label">Romantic, Horror, Sci-Fi (12-18 hours)</span>
+              </div>
+              <div class="bar-row">
+                <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+                <span class="bar-label">Family, Reality Shows, Historical (08-12 hours)</span>
+              </div>
+              <div class="bar-row">
+                <div class="bar-track"><div class="bar-fill" style="width:61%"></div></div>
+                <span class="bar-label">News, religious, Classic Movies (05-10 hours)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Side Cards -->
+          <div class="blue-card-side-col">
+            <div class="blue-card" style="flex:1;justify-content:center;min-height:180px">
+              <h3>Subscription vs.<br>Free Users</h3>
+              <p style="text-align:center">60% of respondents have at least one paid subscription.<br>40% rely on ad-supported or shared accounts.<br>Teenagers &amp; older adults prefer free services.</p>
+            </div>
+            <div class="blue-card" style="flex:1;justify-content:center;min-height:180px">
+              <h3>Insights</h3>
+              <p style="text-align:center">Netflix dominates due to high-quality originals.<br>Amazon Prime is preferred due to bundled subscription benefits.<br>Regional platforms are getting traction, especially for local content.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Approach image -->
+        <div class="full-img">
+          <img src="images/image-import-79.png" alt="Research Overview">
+        </div>
+
+      </div>
+
+      <!-- ── The Solution ── -->
+      <div class="solution">
+        <h2 class="sec-heading">The Solution</h2>
+        <p class="solution-desc">VYBE reimagines the OTT experience as an emotion-first, vibe-driven platform where content is discovered not just by category, but by how it makes the user feel.<br><br>With a mobile-first, mood design approach and immersive features like 'My VYBE Music,' VYBE lets users explore, feel, and engage with content in a way that reflects their unique state of mind.<br><br>Every screen, interaction and feature is crafted to 'feel' right — not just look good.</p>
+      </div>
+
+      <!-- UI Screenshots -->
+      <div class="full-img">
+        <img src="images/image-import-37.png" alt="UI Screens">
+      </div>
+
+      <div class="full-img">
+        <img src="images/image-import-38.png" alt="UI Screens 2">
+      </div>
+
+      <!-- ── Few Components & Pop Up ── -->
+      <div class="components">
+        <h2 class="sec-heading" style="text-align:center">Few Components &amp; Pop Up</h2>
+        <div class="components-row">
+          <img src="images/image-import-114.png" alt="Pop Over" style="max-height:344px;width:auto">
+          <img src="images/image-import-116.png" alt="Vybe Bar" style="max-height:700px;width:auto">
+        </div>
+      </div>
+
+      <!-- ── UI Designs ── -->
+      <div class="ui-designs">
+        <h2 class="sec-heading" style="text-align:center">uI DESIGNS</h2>
+        <div class="screens-row">
+          <img src="images/image-import-1.png" alt="Splash Screen 1">
+          <img src="images/image-import-16.png" alt="Splash Screen 2">
+          <img src="images/image-import-59.png" alt="Splash Screen 3">
+        </div>
+      </div>
+
+      <!-- Quote Box -->
+      <div style="display:flex;justify-content:center;width:100%">
+        <div class="quote-box">
+          <p>VYBE: Stream your mood<br>Focuses on mood-based discovery. Short, edgy, and youth-friendly.</p>
+        </div>
+      </div>
+
+      <!-- ── Login Page ── -->
+      <div class="screen-sec">
+        <h2 class="sec-heading">Login Page</h2>
+        <img src="images/image-import-121.png" alt="Login Screen" style="max-width:363px;width:100%">
+      </div>
+
+      <!-- ── Landing Page / Booking Screen ── -->
+      <div class="screen-sec">
+        <h2 class="sec-heading">Landing Page</h2>
+      </div>
+
+      <div class="screen-sec">
+        <h2 class="sec-heading">bOOKING sCREEN</h2>
+        <img src="images/image-import-61.png" alt="Booking Screen" style="max-width:854px;width:100%">
+      </div>
+
+      <!-- ── Recommendations / Details Page ── -->
+      <div class="reco-wrap">
+        <div class="reco-label">
+          <div class="reco-line"></div>
+          <span class="reco-text">Recommendations</span>
+        </div>
+        <h2 class="sec-heading" style="text-align:center">Details Page</h2>
+        <img src="images/image-import-80.png" alt="Details / Recommendations Screen" style="width:100%;height:auto">
+      </div>
+
+      <!-- ── VMusic Page ── -->
+      <div class="screen-sec">
+        <h2 class="sec-heading">VMusic Page</h2>
+        <img src="images/image-import-120.png" alt="VMusic Page" style="width:100%">
+      </div>
+
+      <!-- ── My VYBE Page ── -->
+      <div class="screen-sec">
+        <h2 class="sec-heading">My VYBE Page</h2>
+        <img src="images/image-import-71.png" alt="My VYBE Page" style="width:100%">
+      </div>
+
+      <!-- Full-width overview image -->
+      <div class="full-img">
+        <img src="images/image-import-18.png" alt="VYBE Screens Overview">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════
+       FOOTER CTA
+  ═══════════════════════════════ -->
+  <div class="footer-sec">
+    <img src="images/image-import-53.png" alt="iPhone in Wooden Hands">
+    <div class="footer-cta">
+      <p class="footer-line1">What's your take? Drop a</p>
+      <p class="footer-vybe">vybe</p>
+    </div>
+  </div>
+
+</body>
+</html>

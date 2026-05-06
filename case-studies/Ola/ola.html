@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ola Redesign — App Redesign Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=Rubik:wght@400;600;700&family=Inter:wght@500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: #1a1a1a;
+      color: #e3e3e3;
+      font-family: 'Rubik', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── Page wrapper ─────────────────────────────── */
+    .page-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    /* Hero radial gradient (lime green → dark) */
+    .hero-gradient {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 900px;
+      background:
+        radial-gradient(ellipse 90% 55% at 50% -5%,
+          rgba(105, 220, 25, 0.30) 0%,
+          rgba(60, 150, 10, 0.12) 45%,
+          transparent 75%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Blurred white glow blob (mirrors FPXop in the .pen) */
+    .glow-blob {
+      position: absolute;
+      top: 55px;
+      left: 22%;
+      width: min(520px, 90vw);
+      height: min(275px, 50vw);
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 50%;
+      filter: blur(min(175px, 20vw));
+      transform: rotate(178deg);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Container ─────────────────────────────────── */
+    .container {
+      max-width: 1151px;
+      margin: 0 auto;
+      padding: 0 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Hero ──────────────────────────────────────── */
+    .hero {
+      padding-top: 125px;
+      padding-bottom: 0;
+    }
+
+    .hero-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .hero-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 837px;
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 72px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.05;
+    }
+
+    .hero-subtitle {
+      font-family: 'Rubik', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .hero-description {
+      font-family: 'Rubik', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: #e3e3e3;
+      line-height: 1.7;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .hero-tags span {
+      font-family: 'Rubik', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: #e3e3e3;
+    }
+
+    .hero-tags .sep {
+      opacity: 0.45;
+    }
+
+    .hero-divider {
+      border: none;
+      border-top: 0.5px solid rgba(227, 227, 227, 0.25);
+    }
+
+    /* ── Main content stack ────────────────────────── */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 100px;
+      padding-top: 120px;
+      padding-bottom: 80px;
+    }
+
+    /* ── iPhone hero mockup ────────────────────────── */
+    .mockup-hero {
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* ── Section shared ────────────────────────────── */
+    .section-heading {
+      font-family: 'Syne', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── The Challenge ─────────────────────────────── */
+    .challenge-section {
+      display: flex;
+      flex-direction: column;
+      gap: 100px;
+    }
+
+    .challenge-text {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .challenge-body {
+      font-family: 'Rubik', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: #e3e3e3;
+      line-height: 1.7;
+    }
+
+    .two-col-images {
+      display: flex;
+      gap: 36px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .two-col-images img {
+      width: calc(50% - 18px);
+      height: auto;
+      display: block;
+      border-radius: 8px;
+    }
+
+    /* ── The Approach ──────────────────────────────── */
+    .approach-outer {
+      display: flex;
+      flex-direction: column;
+      gap: 120px;
+    }
+
+    .approach-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+    }
+
+    .research-blocks {
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+    }
+
+    .research-block {
+      font-size: 24px;
+      line-height: 1.458;
+      color: #e3e3e3;
+    }
+
+    .research-block.rubik { font-family: 'Rubik', sans-serif; font-weight: 400; }
+    .research-block.inter  { font-family: 'Inter', sans-serif;  font-weight: 500; }
+
+    .research-block-title {
+      display: block;
+      font-size: 26px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .research-block ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .research-block ul li {
+      padding-left: 1.2em;
+      position: relative;
+      margin-bottom: 6px;
+    }
+
+    .research-block ul li::before {
+      content: "–";
+      position: absolute;
+      left: 0;
+      color: #e3e3e3;
+    }
+
+    /* ── The Solution ──────────────────────────────── */
+    .solution-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+    }
+
+    .solution-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .solution-item {
+      padding: 18px 0;
+      border-bottom: 0.5px solid rgba(227, 227, 227, 0.12);
+      line-height: 1.4;
+    }
+
+    .solution-item:first-child { padding-top: 0; }
+    .solution-item:last-child  { border-bottom: none; }
+
+    .solution-item strong {
+      display: block;
+      font-family: 'Rubik', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .solution-item p {
+      font-family: 'Rubik', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: #e3e3e3;
+      line-height: 1.65;
+    }
+
+    /* ── Screen sections ───────────────────────────── */
+    .screens-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 120px;
+    }
+
+    .screen-section {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .screen-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.2;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .screen-duo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 48px;
+      padding: 24px 0;
+    }
+
+    .screen-duo img {
+      height: auto;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .screen-duo .img-phone { flex-shrink: 0; }
+    .screen-duo .img-wide  { flex: 1; min-width: 0; width: 100%; }
+
+    .screen-full {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .screen-full-centered {
+      display: block;
+      height: auto;
+      border-radius: 8px;
+      margin: 0 auto;
+    }
+
+    /* ── Footer ────────────────────────────────────── */
+    .footer-quote {
+      font-family: 'Syne', sans-serif;
+      font-size: 48px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.25;
+    }
+
+    .footer-cab {
+      display: flex;
+      justify-content: center;
+      padding: 40px 0 64px;
+    }
+
+    .footer-cab img {
+      width: 242px;
+      height: auto;
+      display: block;
+    }
+
+    /* ── Responsive ────────────────────────────────── */
+
+    /* Tablet */
+    @media (max-width: 900px) {
+      .container { padding: 0 32px; }
+
+      .hero { padding-top: 80px; }
+      .main-content { gap: 72px; padding-top: 80px; }
+
+      .hero-title      { font-size: 52px; }
+      .hero-subtitle   { font-size: 16px; }
+      .hero-tags       { gap: 14px; }
+      .hero-tags span  { font-size: 16px; }
+      .footer-quote    { font-size: 34px; }
+
+      .section-heading { font-size: 26px; }
+      .screen-label    { font-size: 26px; }
+
+      .challenge-section { gap: 56px; }
+
+      .two-col-images {
+        flex-direction: column;
+        gap: 20px;
+      }
+      .two-col-images img { width: 100%; }
+
+      .approach-outer  { gap: 72px; }
+      .research-block  { font-size: 17px; }
+      .research-block-title { font-size: 19px; }
+
+      .screens-wrapper { gap: 72px; }
+      .screen-section  { gap: 32px; }
+
+      .screen-duo {
+        flex-direction: column;
+        gap: 20px;
+        padding: 0;
+      }
+      .screen-duo .img-phone,
+      .screen-duo .img-wide {
+        width: 100% !important;
+        flex: none;
+      }
+    }
+
+    /* Large mobile */
+    @media (max-width: 600px) {
+      .container { padding: 0 20px; }
+
+      .hero { padding-top: 56px; }
+      .main-content { gap: 56px; padding-top: 56px; padding-bottom: 56px; }
+
+      .hero-inner      { gap: 24px; }
+      .hero-meta       { gap: 28px; }
+      .hero-title      { font-size: 36px; line-height: 1.08; }
+      .hero-subtitle   { font-size: 13px; }
+      .hero-description { font-size: 14px; line-height: 1.65; }
+      .hero-tags       { gap: 10px; }
+      .hero-tags span  { font-size: 13px; }
+
+      .section-heading { font-size: 22px; }
+      .screen-label    { font-size: 22px; letter-spacing: 0.03em; }
+      .footer-quote    { font-size: 24px; line-height: 1.3; }
+
+      .challenge-section { gap: 40px; }
+      .challenge-text    { gap: 20px; }
+      .challenge-body    { font-size: 14px; }
+
+      .approach-outer    { gap: 56px; }
+      .approach-inner    { gap: 32px; }
+      .research-blocks   { gap: 36px; }
+      .research-block    { font-size: 14px; line-height: 1.6; }
+      .research-block-title { font-size: 16px; margin-bottom: 8px; }
+
+      .solution-inner    { gap: 32px; }
+      .solution-item     { padding: 14px 0; }
+      .solution-item strong { font-size: 16px; }
+      .solution-item p   { font-size: 13px; }
+
+      .screens-wrapper { gap: 56px; }
+      .screen-section  { gap: 20px; }
+      .mockup-hero     { border-radius: 10px; }
+
+      .footer-cab { padding: 24px 0 48px; }
+      .footer-cab img { width: 140px; }
+    }
+
+    /* Small mobile */
+    @media (max-width: 400px) {
+      .container { padding: 0 16px; }
+
+      .hero { padding-top: 44px; }
+      .main-content { gap: 48px; padding-top: 48px; }
+
+      .hero-title    { font-size: 30px; }
+      .footer-quote  { font-size: 20px; }
+      .section-heading { font-size: 20px; }
+      .screen-label    { font-size: 20px; }
+
+      .research-block { font-size: 13px; }
+      .research-block-title { font-size: 15px; }
+
+      .hero-tags { row-gap: 8px; column-gap: 10px; }
+      .hero-tags .sep { display: none; }
+
+      .challenge-section { gap: 32px; }
+      .screens-wrapper   { gap: 48px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+  <div class="hero-gradient"></div>
+  <div class="glow-blob"></div>
+
+  <div class="container">
+
+    <!-- ══ HERO ══════════════════════════════════════ -->
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-title-group">
+          <h1 class="hero-title">Ola Redesign</h1>
+          <p class="hero-subtitle">App Redesign • 2024</p>
+        </div>
+        <div class="hero-meta">
+          <p class="hero-description">
+            OLA is one of India's most widely used cab booking platforms — but its app experience
+            didn't quite match the scale of the product. This was a conceptual redesign project
+            aimed at reimagining OLA's mobile UI with a sharper visual identity, better hierarchy,
+            and a dark-first design system that feels modern, premium and intuitive.
+          </p>
+          <div class="hero-tags">
+            <span>Dark Mode</span>
+            <span class="sep">·</span>
+            <span>UI Redesign</span>
+            <span class="sep">·</span>
+            <span>Conceptual</span>
+            <span class="sep">·</span>
+            <span>Mobility</span>
+          </div>
+          <hr class="hero-divider">
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ MAIN CONTENT ══════════════════════════════ -->
+    <div class="main-content">
+
+      <!-- iPhone Hero Mockup -->
+      <img
+        src="images/image-import-7.png"
+        alt="OLA App Redesign Mockup"
+        class="mockup-hero"
+      >
+
+      <!-- ── THE CHALLENGE ─────────────────────────── -->
+      <section class="challenge-section">
+        <div class="challenge-text">
+          <h2 class="section-heading">The Challenge</h2>
+          <div class="challenge-body">
+            <p>
+              OLA serves millions of users daily but like any product at scale, there's always room
+              to evolve. As user expectations around mobile experiences continue to rise, there's a
+              growing opportunity to evolve OLA's app into something that feels more intuitive,
+              accessible and seamlessly woven into daily life.
+            </p>
+            <br>
+            <p>
+              The goal: refine the visual language, reduce friction in the booking flow, introduce a
+              dark mode for better usability across conditions, and explore smarter touchpoints that
+              bring OLA closer to its users without them having to open the app.
+            </p>
+          </div>
+        </div>
+        <div class="two-col-images">
+          <img src="images/image-import-93.png" alt="OLA App Current State Analysis">
+          <img src="images/image-import-94.png" alt="OLA App Pain Points">
+        </div>
+      </section>
+
+      <!-- ── THE APPROACH + SOLUTION ───────────────── -->
+      <section class="approach-outer">
+
+        <!-- The Approach -->
+        <div class="approach-inner">
+          <h2 class="section-heading">The Approach</h2>
+          <div class="research-blocks">
+
+            <!-- User Interviews -->
+            <div class="research-block rubik">
+              <span class="research-block-title">User Interviews</span>
+              Conducted user interviews to gather insights and identify challenges users encounter
+              with the current app. These are few of the common challenges users face in cab booking:
+              <ul>
+                <li>If a user books ride for someone else there's no option to share contact of driver and OTP to the person.</li>
+                <li>In the case of a niche address, users may find it frustrating that the app does not capture the precise location.</li>
+                <li>The driver's frequent tardiness is frustrating.</li>
+                <li>Even when there are 10 drivers nearby, none accept the ride, resulting in wasted time.</li>
+                <li>Initially after accepting the ride, driver is late or is unreachable leading potential cancellation charges for us.</li>
+                <li>Prices are fixed, and users do not have the option to negotiate for their desired price.</li>
+              </ul>
+            </div>
+
+            <!-- Analytics Data -->
+            <div class="research-block inter">
+              <span class="research-block-title">Analytics Data</span>
+              <ul>
+                <li><strong style="color:#fff;font-weight:600;">Vehicle quality is poor</strong> — Several users said that Ola cabs are old, smelly, and air conditioner is not functional.</li>
+                <li><strong style="color:#fff;font-weight:600;">Pricing is high</strong> — Users have reported unexpected charges and fare discrepancies.</li>
+                <li>Some users have reported frequent cancellations, there is a deficiency in service. A survey of 65,000 consumers found that 71% of them say ride cancellations are a problem.</li>
+                <li><strong style="color:#fff;font-weight:600;">Driver's behavior is rude</strong> — Certain users experienced that drivers cancel rides often, when asked about payment methods, and do not cooperate.</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- The Solution -->
+        <div class="solution-inner">
+          <h2 class="section-heading">The Solution</h2>
+          <div class="solution-list">
+            <div class="solution-item">
+              <strong>Clear Visual Hierarchy</strong>
+              <p>Limited decorative features, attention to typography &amp; overall clarity.</p>
+            </div>
+            <div class="solution-item">
+              <strong>Minimal Dark Mode UI</strong>
+              <p>The thoughtful use of dark mode makes the interface look clean, classy, fresh and aesthetically pleasing in general.</p>
+            </div>
+            <div class="solution-item">
+              <strong>Subtle Roundness on UI Elements</strong>
+              <p>Making the interface look more organic and user friendly.</p>
+            </div>
+            <div class="solution-item">
+              <strong>Real-life Photography</strong>
+              <p>It relates to real-life experiences on an emotional level.</p>
+            </div>
+            <div class="solution-item">
+              <strong>Focus on Contrast</strong>
+              <p>With enough contrast we can easily differentiate background from the elements, understand the visual hierarchy and use the interface with ease.</p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ── SCREENS ────────────────────────────────── -->
+      <div class="screens-wrapper">
+
+        <!-- Home Screen -->
+        <section class="screen-section">
+          <h2 class="screen-label">Home Screen</h2>
+          <div class="screen-duo">
+            <img
+              src="images/image-import-35.png"
+              alt="OLA Home Screen — Phone"
+              class="img-phone"
+              style="width: clamp(120px, 29%, 332px);"
+            >
+            <img
+              src="images/image-import-56.png"
+              alt="OLA Home Screen — Detail"
+              class="img-wide"
+            >
+          </div>
+          <img
+            src="images/image-import-28.png"
+            alt="OLA Home Screen — Full View"
+            class="screen-full"
+          >
+        </section>
+
+        <!-- Booking Screen -->
+        <section class="screen-section">
+          <h2 class="screen-label">Booking Screen</h2>
+          <div class="screen-duo">
+            <img
+              src="images/image-import-42.png"
+              alt="OLA Booking Screen — Phone"
+              class="img-phone"
+              style="width: clamp(110px, 27%, 316px);"
+            >
+            <img
+              src="images/image-import-8.png"
+              alt="OLA Booking Screen — Detail"
+              class="img-wide"
+            >
+          </div>
+          <img
+            src="images/image-import-47.png"
+            alt="OLA Screens"
+            class="screen-full"
+          >
+          <img
+            src="images/image-import-76.png"
+            alt="OLA Screens"
+            class="screen-full"
+          >
+          <img
+            src="images/image-import-52.png"
+            alt="OLA Screens"
+            class="screen-full-centered"
+            style="max-width: 720px; width: 100%;"
+          >
+        </section>
+
+      </div><!-- end screens-wrapper -->
+
+      <!-- ── CLOSING QUOTE ──────────────────────────── -->
+      <p class="footer-quote">
+        A ride-booking experience redesigned for clarity, confidence, and character.
+      </p>
+
+    </div><!-- end main-content -->
+
+    <!-- Cab Image -->
+    <div class="footer-cab">
+      <img src="images/image-import-58.png" alt="OLA Cab">
+    </div>
+
+  </div><!-- end container -->
+</div><!-- end page-wrapper -->
+
+</body>
+</html>
