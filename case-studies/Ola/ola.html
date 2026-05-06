@@ -481,8 +481,96 @@
       .screens-wrapper   { gap: 48px; }
     }
   </style>
+  <style id="st-nav-styles">
+    #st-header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 48px;
+      background: rgba(26, 26, 26, 0.72);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 1px 24px rgba(0, 0, 0, 0.3);
+      font-family: 'Rubik', sans-serif;
+    }
+    @media (min-width: 810px) { #st-header { padding: 16px 100px; } }
+    @media (max-width: 640px) { #st-header { padding: 14px 20px; } #st-nav { right: 16px !important; } }
+    .st-back {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 500; letter-spacing: -0.01em;
+      color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.15s;
+    }
+    .st-back:hover { color: #fff; }
+    .st-wordmark {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      font-size: 15px; font-weight: 600; letter-spacing: -0.03em;
+      color: rgba(255,255,255,0.85); pointer-events: none;
+    }
+    @media (max-width: 640px) { .st-wordmark { display: none; } }
+    #st-hamburger {
+      display: flex; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 6px; background: none; border: none; outline: none;
+    }
+    #st-hamburger span {
+      display: block; width: 22px; height: 2px; background: rgba(255,255,255,0.85);
+      border-radius: 2px; transition: all 0.3s ease;
+    }
+    #st-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    #st-hamburger.open span:nth-child(2) { opacity: 0; }
+    #st-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    #st-nav {
+      display: none; position: fixed; top: 58px; right: 48px; width: 200px;
+      background: rgba(30, 30, 30, 0.92);
+      backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.12); border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4); padding: 8px 0; z-index: 9998; overflow: hidden;
+    }
+    #st-nav.open { display: flex; flex-direction: column; }
+    #st-nav a {
+      font-family: 'Rubik', sans-serif; font-size: 14px; font-weight: 500;
+      color: rgba(255,255,255,0.8); text-decoration: none; padding: 12px 20px; transition: background 0.15s;
+    }
+    #st-nav a:hover { background: rgba(255,255,255,0.06); color: #fff; }
+    @media (min-width: 810px) { #st-nav { right: 100px; } }
+    .page-wrapper { padding-top: 62px; }
+  </style>
 </head>
 <body>
+<header id="st-header">
+  <a class="st-back" href="../../index.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back
+  </a>
+  <span class="st-wordmark">Shraddha Thorat</span>
+  <button id="st-hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<nav id="st-nav">
+  <a href="../../index.html">Home</a>
+  <a href="../../index.html#work">Work</a>
+  <a href="../../index.html#process">Process</a>
+  <a href="../../index.html#about-1">About</a>
+</nav>
+<script>
+(function() {
+  var btn = document.getElementById('st-hamburger');
+  var nav = document.getElementById('st-nav');
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    btn.classList.toggle('open');
+    nav.classList.toggle('open');
+  });
+  document.addEventListener('click', function(e) {
+    if (!nav.contains(e.target) && e.target !== btn) {
+      btn.classList.remove('open');
+      nav.classList.remove('open');
+    }
+  });
+})();
+</script>
 
 <div class="page-wrapper">
   <div class="hero-gradient"></div>
