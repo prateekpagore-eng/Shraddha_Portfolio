@@ -549,7 +549,7 @@
     cursor: grab;
     user-select: none;
     -webkit-user-select: none;
-    touch-action: none;
+    touch-action: pan-y;
   }
   .pg-polaroid:active { cursor: grabbing; }
   .pg-polaroid.pg-grid-cursor { cursor: pointer; }
